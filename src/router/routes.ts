@@ -8,9 +8,9 @@ const routes: RouteRecordRaw[] = [
     meta: { keepalive: false },
     children: [
       {
-        path: "weigh",
-        name: "weigh",
-        component: () => import("@/views/Weigh.vue"),
+        path: "",
+        name: "main",
+        component: () => import("@/views/Main.vue"),
         meta: { keepalive: false },
       },
     ],

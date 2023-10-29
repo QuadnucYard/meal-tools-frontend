@@ -8,10 +8,6 @@ const router: Router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   console.log("beforeEach", from, to, to.meta);
-  if (to.path === "/") {
-    next("weigh");
-    return;
-  }
   next();
 });
 

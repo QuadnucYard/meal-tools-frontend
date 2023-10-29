@@ -74,7 +74,7 @@ import { Canteen } from "@/api/canteen";
 import { Food } from "@/api/food";
 import Message from "@/utils/message";
 import PinyinMatch from "pinyin-match";
-import CreateFoodDialog from "./components/CreateFoodDialog.vue";
+import CreateFoodDialog from "./CreateFoodDialog.vue";
 import { date } from "quasar";
 import { formatDateToDay } from "@/utils/date-utils";
 import { useCanteenStore } from "@/stores/canteen";
