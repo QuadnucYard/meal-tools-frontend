@@ -16,6 +16,10 @@ export interface Weigh extends WeighBase {
   create_time: string;
 }
 
+export async function getWeighs() {
+  return (await api.get<Weigh[]>("/weigh")).data;
+}
+
 export async function createWeigh(payload: WeighCreate) {
   return (await api.post<Weigh>("/weigh", payload)).data;
 }

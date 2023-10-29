@@ -31,11 +31,8 @@
 
 <script setup lang="ts">
 import { Food, FoodCreate, createFood } from "@/api/food";
+import { useFoodStore } from "@/stores/food";
 import Message from "@/utils/message";
-
-const emit = defineEmits<{
-  confirm: [food: FoodCreate];
-}>();
 
 const visible = ref(false);
 
@@ -57,8 +54,8 @@ const show = () => {
 
 const onConfirm = async () => {
   try {
-    const result = await createFood(food);
-    emit("confirm", result);
+    const foodStore = useFoodStore();
+    const result = await foodStore.create(food);
     Message.success("成功创建食物");
     promiseStatus?.resolve(result);
   } catch (e) {

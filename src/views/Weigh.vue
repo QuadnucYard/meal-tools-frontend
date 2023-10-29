@@ -4,7 +4,7 @@
       <q-select
         label="食堂"
         v-model="form.canteen"
-        :options="form.canteenOptions"
+        :options="canteenStore.canteens"
         :option-label="(opt) => `${opt.name} (${opt.aliases})`"
         emit-value
         map-options
@@ -70,22 +70,24 @@
 </template>
 
 <script setup lang="ts">
-import { Canteen, getCanteens } from "@/api/canteen";
-import { Food, getFoods } from "@/api/food";
-import { createWeigh } from "@/api/weigh";
+import { Canteen } from "@/api/canteen";
+import { Food } from "@/api/food";
 import Message from "@/utils/message";
 import PinyinMatch from "pinyin-match";
-import CreateFoodDialog from "./CreateFoodDialog.vue";
+import CreateFoodDialog from "./components/CreateFoodDialog.vue";
 import { date } from "quasar";
 import { formatDateToDay } from "@/utils/date-utils";
+import { useCanteenStore } from "@/stores/canteen";
+import { useFoodStore } from "@/stores/food";
+import { useWeighStore } from "@/stores/weigh";
 
-const canteens = ref<Canteen[]>([]);
-const foods = ref<Food[]>([]);
+const canteenStore = useCanteenStore();
+const foodStore = useFoodStore();
+const weighStore = useWeighStore();
 
 const createFoodDialogRef = ref<InstanceType<typeof CreateFoodDialog>>();
 
 const form = reactive({
-  canteenOptions: [] as Canteen[],
   foodOptions: [] as Food[],
   canteen: undefined as Canteen | undefined,
   food: undefined as Food | undefined,
@@ -93,31 +95,30 @@ const form = reactive({
   record_date: formatDateToDay(new Date()),
 });
 
-onMounted(async () => {
-  form.canteenOptions = canteens.value = await getCanteens();
-  form.foodOptions = foods.value = await getFoods();
-  form.canteen = canteens.value[0];
-  // form.food = foods.value[0];
-});
+watch(
+  () => canteenStore.canteens,
+  () => (form.canteen ??= canteenStore.canteens[0])
+);
 
 const foodFilterFn = (val: string, update: any, abort: any) => {
   update(() => {
     form.foodOptions = val
-      ? foods.value.filter((c) => PinyinMatch.match(c.name, val) || c.aliases.some((a) => PinyinMatch.match(a, val)))
-      : foods.value;
+      ? foodStore.foods.filter(
+          (c) => PinyinMatch.match(c.name, val) || c.aliases.some((a) => PinyinMatch.match(a, val))
+        )
+      : foodStore.foods;
   });
 };
 
 const onAddFood = () => {
   createFoodDialogRef.value?.show().then((food) => {
-    foods.value.push(food);
     form.food = food;
   });
 };
 
 const onSubmit = async () => {
   try {
-    const result = await createWeigh({
+    await weighStore.create({
       canteen_id: form.canteen!.id,
       food_id: form.canteen!.id,
       weight: form.weight!,
