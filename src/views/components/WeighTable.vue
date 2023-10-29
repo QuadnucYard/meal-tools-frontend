@@ -43,19 +43,25 @@
 
 <script setup lang="ts">
 import { Weigh } from "@/api/weigh";
+import { useCanteenStore } from "@/stores/canteen";
+import { useFoodStore } from "@/stores/food";
 import { useWeighStore } from "@/stores/weigh";
+import { formatDate } from "@/utils/date-utils";
 import { columnDefaults } from "@/utils/table-utils";
 import { QTable } from "quasar";
 
+const canteenStore = useCanteenStore();
+const foodStore = useFoodStore();
 const weighStore = useWeighStore();
 
 const columns = columnDefaults(
   [
     { name: "id", label: "ID" },
-    { name: "canteen", label: "食堂", field: (row)=>row.name },
-    { name: "food", label: "食物", field: (row)=>row.name },
+    { name: "canteen", label: "食堂", field: (row: Weigh) => canteenStore.get(row.canteen_id)?.name },
+    { name: "food", label: "食物", field: (row: Weigh) => foodStore.get(row.food_id)?.name },
+    { name: "weight", label: "重量 (g)" },
     { name: "record_date", label: "记录时间" },
-    { name: "create_time", label: "创建时间" },
+    { name: "create_time", label: "创建时间", format: formatDate },
     { name: "handle", label: "操作", sortable: false },
   ],
   { sortable: true, align: "center" }
