@@ -13,26 +13,6 @@
     :filter="filter"
     :loading="loading"
   >
-    <template v-slot:top-right>
-      <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
-    </template>
-    <template #body-cell-is_superuser="props">
-      <q-td :props="props">
-        <q-checkbox
-          dense
-          v-model="props.row.is_superuser"
-          checked-icon="star"
-          unchecked-icon="star_border"
-          indeterminate-icon="help"
-          color="red"
-          :disable="true"
-        />
-      </q-td>
-    </template>
     <!-- <template #body-cell-handle="props">
       <q-td :props="props">
         <q-btn flat dense round color="blue" icon="edit" size="sm" @click="onUpdateEdit(props.row)" />
