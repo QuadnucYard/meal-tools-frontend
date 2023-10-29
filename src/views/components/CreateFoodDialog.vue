@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="visible">
-    <q-card style="max-width: 300px">
+    <q-card style="width: 400px">
       <q-card-section>
         <div class="text-h6">创建食物</div>
       </q-card-section>
@@ -18,7 +18,22 @@
           new-value-mode="add"
         />
         <q-input v-model="food.desc" label="描述" type="textarea" filled />
-        <q-input v-model.number="food.price" label="价格" type="number" :min="0" filled />
+        <q-item>
+          <q-item-section avatar> 价格 </q-item-section>
+          <q-item-section>
+            <q-slider
+              v-model="food.price"
+              markers
+              marker-labels
+              label
+              label-always
+              :min="0"
+              :max="5"
+              :step="0.5"
+              snap
+            />
+          </q-item-section>
+        </q-item>
       </q-card-section>
 
       <q-card-actions align="right">
@@ -55,7 +70,7 @@ const show = () => {
 const onConfirm = async () => {
   try {
     const foodStore = useFoodStore();
-    const result = await foodStore.create(food);
+    const result = await foodStore.create({ ...food, price: food.price * 10 });
     Message.success("成功创建食物");
     promiseStatus?.resolve(result);
   } catch (e) {
