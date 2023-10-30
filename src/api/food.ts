@@ -18,3 +18,7 @@ export async function getFoods() {
 export async function createFood(payload: FoodCreate) {
   return (await api.post<Food>("/food", payload)).data;
 }
+
+export async function getRecentFoods() {
+  return (await api.get<Food[]>("/food/rec")).data;
+}

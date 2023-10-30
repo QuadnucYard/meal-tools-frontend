@@ -27,6 +27,14 @@
           <q-btn round dense flat icon="add" @click="onAddFood" />
         </template>
       </q-select>
+      <div style="display: flex">
+        <span class="text-grey" style="width: 5em">最近</span>
+        <span class="q-gutter-x-md">
+          <span v-for="food in recentFoods" class="text-blue cursor-pointer inline-block" @click="onSelectRecentFood(food)">
+          {{ food.name }}
+        </span>
+        </span>
+      </div>
       <q-input
         clearable
         v-model.number="form.weight"
@@ -71,7 +79,7 @@
 
 <script setup lang="ts">
 import { Canteen } from "@/api/canteen";
-import { Food } from "@/api/food";
+import { Food, getRecentFoods } from "@/api/food";
 import Message from "@/utils/message";
 import PinyinMatch from "pinyin-match";
 import CreateFoodDialog from "./CreateFoodDialog.vue";
@@ -94,6 +102,7 @@ const form = reactive({
   weight: undefined as int | undefined,
   record_date: formatDateToDay(new Date()),
 });
+const recentFoods = ref<Food[]>([]);
 
 watch(
   () => canteenStore.canteens,
@@ -110,6 +119,14 @@ const foodFilterFn = (val: string, update: any, abort: any) => {
   });
 };
 
+const fetchRecentFoods = async () => {
+  recentFoods.value = await getRecentFoods();
+};
+
+const onSelectRecentFood = (food: Food) => {
+  form.food = food;
+};
+
 const onAddFood = () => {
   createFoodDialogRef.value?.show().then((food) => {
     form.food = food;
@@ -120,15 +137,20 @@ const onSubmit = async () => {
   try {
     await weighStore.create({
       canteen_id: form.canteen!.id,
-      food_id: form.canteen!.id,
+      food_id: form.food!.id,
       weight: form.weight!,
       record_date: form.record_date,
     });
     Message.success("成功创建记录");
+    await fetchRecentFoods();
   } catch (e) {
     Message.error("创建失败");
   }
 };
+
+onMounted(async () => {
+  await fetchRecentFoods();
+});
 </script>
 
 <style scoped></style>
