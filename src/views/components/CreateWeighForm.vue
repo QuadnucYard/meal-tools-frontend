@@ -2,6 +2,7 @@
   <div style="padding: 40px">
     <q-form class="q-gutter-md" style="max-width: 400px" @submit="onSubmit">
       <q-select
+      options-dense
         label="食堂"
         v-model="form.canteen"
         :options="canteenStore.canteens"
@@ -13,6 +14,7 @@
       />
       <q-select
         clearable
+        options-dense
         label="食物"
         v-model="form.food"
         :options="form.foodOptions"
@@ -142,6 +144,8 @@ const onSubmit = async () => {
       record_date: form.record_date,
     });
     Message.success("成功创建记录");
+    form.food = undefined;
+    form.weight = undefined;
     await fetchRecentFoods();
   } catch (e) {
     Message.error("创建失败");

@@ -10,6 +10,7 @@
     flat
     dense
     class="my-sticky-table-handle"
+    :pagination="initialPagination"
     :filter="filter"
     :loading="loading"
   >
@@ -46,6 +47,13 @@ const columns = columnDefaults(
   ],
   { sortable: true, align: "center" }
 );
+
+const initialPagination = {
+  sortBy: "id",
+  descending: true,
+  page: 1,
+  rowsPerPage: 10,
+};
 
 const tableRef = ref<QTable>();
 
