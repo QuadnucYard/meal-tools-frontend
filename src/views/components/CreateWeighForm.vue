@@ -1,16 +1,11 @@
 <template>
   <div style="padding: 40px">
     <q-form class="q-gutter-md" style="max-width: 400px" @submit="onSubmit">
-      <q-select
-      options-dense
+      <q-btn-toggle
         label="食堂"
         v-model="form.canteen"
-        :options="canteenStore.canteens"
-        :option-label="(opt) => `${opt.name} (${opt.aliases})`"
-        emit-value
-        map-options
-        filled
-        :rules="[(val) => val || '请选择食堂']"
+        toggle-color="primary"
+        :options="canteenOptions"
       />
       <q-select
         clearable
@@ -18,7 +13,7 @@
         label="食物"
         v-model="form.food"
         :options="form.foodOptions"
-        :option-label="(opt) => `${opt.name} (${opt.aliases}) [￥${opt.price}]`"
+        :option-label="(opt) => `${opt.name} (${opt.aliases}) [￥${opt.price / 10}]`"
         use-input
         map-options
         @filter="foodFilterFn"
@@ -32,9 +27,13 @@
       <div style="display: flex">
         <span class="text-grey" style="width: 5em">最近</span>
         <span class="q-gutter-x-md">
-          <span v-for="food in recentFoods" class="text-blue cursor-pointer inline-block" @click="onSelectRecentFood(food)">
-          {{ food.name }}
-        </span>
+          <span
+            v-for="food in recentFoods"
+            class="text-blue cursor-pointer inline-block"
+            @click="onSelectRecentFood(food)"
+          >
+            {{ food.name }}
+          </span>
         </span>
       </div>
       <q-input
@@ -73,7 +72,7 @@
           />
         </template>
       </q-input>
-      <q-btn type="submit">创建</q-btn>
+      <q-btn color="primary" type="submit">创建</q-btn>
     </q-form>
   </div>
   <create-food-dialog ref="createFoodDialogRef" />
@@ -105,6 +104,9 @@ const form = reactive({
   record_date: formatDateToDay(new Date()),
 });
 const recentFoods = ref<Food[]>([]);
+const canteenOptions = computed(() =>
+  canteenStore.canteens.map((opt) => ({ label: `${opt.name} (${opt.aliases})`, value: opt }))
+);
 
 watch(
   () => canteenStore.canteens,
