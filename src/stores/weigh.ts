@@ -1,4 +1,5 @@
-import { Weigh, WeighCreate, createWeigh, getWeighs } from "@/api/weigh";
+import { Weigh, WeighCreate, createWeigh, deleteWeigh, getWeighs, updateWeigh } from "@/api/weigh";
+import "@/utils/array-extensions";
 import _ from "lodash-es";
 import { defineStore } from "pinia";
 
@@ -15,10 +16,23 @@ export const useWeighStore = defineStore("weigh", () => {
     return result;
   };
 
+  const update = async (weigh: Weigh) => {
+    const result = await updateWeigh(weigh);
+    Object.assign(weigh, result);
+    return result;
+  };
+
+  const remove = async (weigh: Weigh) => {
+    const result = await deleteWeigh(weigh.id);
+    weighs.value.removeOne(weigh);
+    delete weighDict.value[weigh.id];
+    return result;
+  };
+
   getWeighs().then((v) => {
     weighs.value = v;
     weighDict.value = _.keyBy(v, "id");
   });
 
-  return { weighs, create, get };
+  return { weighs, create, get, remove, update };
 });

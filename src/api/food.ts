@@ -19,6 +19,10 @@ export async function createFood(payload: FoodCreate) {
   return (await api.post<Food>("/food", payload)).data;
 }
 
+export async function updateFood(payload: Food) {
+  return (await api.put<Food>(`/food/${payload.id}`, payload)).data;
+}
+
 export async function getRecentFoods() {
   return (await api.get<Food[]>("/food/rec")).data;
 }

@@ -23,3 +23,11 @@ export async function getWeighs() {
 export async function createWeigh(payload: WeighCreate) {
   return (await api.post<Weigh>("/weigh", payload)).data;
 }
+
+export async function updateWeigh(payload: Weigh) {
+  return (await api.put<Weigh>(`/weigh/${payload.id}`, payload)).data;
+}
+
+export async function deleteWeigh(id: int) {
+  return (await api.delete<Weigh>(`/weigh/${id}`)).data;
+}

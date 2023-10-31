@@ -13,17 +13,43 @@
     :filter="filter"
     :loading="loading"
   >
-    <!-- <template #body-cell-handle="props">
+    <template #body-cell-name="props">
       <q-td :props="props">
-        <q-btn flat dense round color="blue" icon="edit" size="sm" @click="onUpdateEdit(props.row)" />
+        {{ props.row.name }}
+        <q-popup-edit v-model="props.row.name" auto-save :cover="false" #="scope">
+          <q-input v-model="scope.value" dense autofocus @keyup.enter="scope.set" />
+        </q-popup-edit>
       </q-td>
-    </template> -->
+    </template>
+    <template #body-cell-price="props">
+      <q-td :props="props">
+        ￥{{ props.row.price / 10 }}
+        <q-popup-edit v-model="props.row.price" auto-save :cover="false" #="scope">
+          <q-input v-model="scope.value" dense autofocus clearable type="number" prefix="￥" @keyup.enter="scope.set" />
+        </q-popup-edit>
+      </q-td>
+    </template>
+    <template #body-cell-desc="props">
+      <q-td :props="props">
+        {{ props.row.desc }}
+        <q-popup-edit v-model="props.row.desc" auto-save :cover="false" #="scope">
+          <q-input v-model="scope.value" dense autofocus clearable @keyup.enter="scope.set" />
+        </q-popup-edit>
+      </q-td>
+    </template>
+    <template #body-cell-handle="props">
+      <q-td :props="props">
+        <q-btn flat dense round color="blue" icon="edit" size="sm" @click="onUpdateRow(props.row)" />
+      </q-td>
+    </template>
   </q-table>
 </template>
 
 <script setup lang="ts">
+import { Food } from "@/api/food";
 import { useFoodStore } from "@/stores/food";
 import { formatDate } from "@/utils/date-utils";
+import Message from "@/utils/message";
 import { columnDefaults } from "@/utils/table-utils";
 import { QTable } from "quasar";
 
@@ -46,6 +72,11 @@ const tableRef = ref<QTable>();
 
 const loading = ref(false);
 const filter = ref("");
+
+const onUpdateRow = async (row: Food) => {
+  await foodStore.update(row);
+  Message.success("成功更新食物信息");
+};
 </script>
 
 <style scoped>

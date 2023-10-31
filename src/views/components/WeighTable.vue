@@ -14,11 +14,28 @@
     :filter="filter"
     :loading="loading"
   >
-    <!-- <template #body-cell-handle="props">
+    <template #body-cell-weight="props">
       <q-td :props="props">
-        <q-btn flat dense round color="blue" icon="edit" size="sm" @click="onUpdateEdit(props.row)" />
+        {{ props.row.weight }}
+        <q-popup-edit v-model="props.row.weight" auto-save :cover="false" #="scope">
+          <q-input v-model="scope.value" dense autofocus type="number" suffix="g" @keyup.enter="scope.set" />
+        </q-popup-edit>
       </q-td>
-    </template> -->
+    </template>
+    <template #body-cell-record_date="props">
+      <q-td :props="props">
+        {{ props.row.record_date }}
+        <q-popup-proxy auto-save :cover="false">
+          <q-date v-model="props.row.record_date" minimal mask="YYYY-MM-DD" />
+        </q-popup-proxy>
+      </q-td>
+    </template>
+    <template #body-cell-handle="props">
+      <q-td :props="props">
+        <q-btn flat dense round color="blue" icon="edit" size="sm" @click="onUpdateRow(props.row)" />
+        <q-btn flat dense round color="red" icon="delete" size="sm" @click="onDeleteRow(props.row)" />
+      </q-td>
+    </template>
   </q-table>
 </template>
 
@@ -28,6 +45,7 @@ import { useCanteenStore } from "@/stores/canteen";
 import { useFoodStore } from "@/stores/food";
 import { useWeighStore } from "@/stores/weigh";
 import { formatDate } from "@/utils/date-utils";
+import Message from "@/utils/message";
 import { columnDefaults } from "@/utils/table-utils";
 import { QTable } from "quasar";
 
@@ -59,6 +77,15 @@ const tableRef = ref<QTable>();
 
 const loading = ref(false);
 const filter = ref("");
+
+const onUpdateRow = async (row: Weigh) => {
+  await weighStore.update(row);
+  Message.success("成功更新记录");
+};
+const onDeleteRow = async (row: Weigh) => {
+  await weighStore.remove(row);
+  Message.success("成功删除记录");
+};
 </script>
 
 <style scoped>

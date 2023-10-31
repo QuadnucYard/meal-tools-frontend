@@ -1,4 +1,4 @@
-import { Food, FoodCreate, createFood, getFoods } from "@/api/food";
+import { Food, FoodCreate, createFood, getFoods, updateFood } from "@/api/food";
 import _ from "lodash-es";
 import { defineStore } from "pinia";
 
@@ -15,10 +15,16 @@ export const useFoodStore = defineStore("food", () => {
     return result;
   };
 
+  const update = async (food: Food) => {
+    const result = await updateFood(food);
+    Object.assign(food, result);
+    return result;
+  };
+
   getFoods().then((v) => {
     foods.value = v;
     foodDict.value = _.keyBy(v, "id");
   });
 
-  return { foods, create, get };
+  return { foods, create, get, update };
 });
