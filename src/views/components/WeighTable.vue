@@ -32,6 +32,9 @@
     <template #body-cell-food="props">
       <q-td :props="props">
         {{ props.col.field(props.row) }}
+        <q-tooltip v-if="foodStore.get(props.row.food_id)?.desc.length > 0" :offset="[0, 0]">
+          {{ foodStore.get(props.row.food_id)?.desc }}
+        </q-tooltip>
         <q-popup-edit v-model="props.row.food_id" auto-save :cover="false" #="scope">
           <q-select v-model="scope.value" dense options-dense emit-value map-options :options="foodStore.options" />
         </q-popup-edit>

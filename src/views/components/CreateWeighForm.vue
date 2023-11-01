@@ -29,6 +29,9 @@
             @click="onSelectRecentFood(food)"
           >
             {{ food.name }}
+            <q-tooltip v-if="food.desc.length > 0">
+              {{ food.desc }}
+            </q-tooltip>
           </span>
         </span>
       </div>
@@ -92,7 +95,7 @@ const foodStore = useFoodStore();
 const weighStore = useWeighStore();
 
 const formRef = ref<InstanceType<typeof QForm>>();
-const weightInputRef = ref<InstanceType<typeof QInput>>()
+const weightInputRef = ref<InstanceType<typeof QInput>>();
 const createFoodDialogRef = ref<InstanceType<typeof CreateFoodDialog>>();
 
 const form = reactive({
