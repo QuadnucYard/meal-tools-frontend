@@ -1,12 +1,7 @@
 <template>
   <div style="padding: 40px">
-    <q-form class="q-gutter-md" style="max-width: 400px" @submit="onSubmit">
-      <q-btn-toggle
-        label="食堂"
-        v-model="form.canteen"
-        toggle-color="primary"
-        :options="canteenOptions"
-      />
+    <q-form class="q-gutter-md" style="max-width: 500px" @submit="onSubmit" ref="formRef">
+      <q-btn-toggle label="食堂" v-model="form.canteen" toggle-color="primary" :options="canteenOptions" />
       <q-select
         clearable
         options-dense
@@ -18,6 +13,7 @@
         map-options
         @filter="foodFilterFn"
         filled
+        style="max-width: 300px"
         :rules="[(val) => val || '请选择食物']"
       >
         <template v-slot:after>
@@ -38,14 +34,15 @@
       </div>
       <q-input
         clearable
-        v-model.number="form.weight"
+        v-model="form.weight"
         label="重量"
-        type="number"
-        :min="0"
         filled
-        :rules="[(val) => val || '请输入重量']"
+        style="max-width: 300px"
+        :rules="[(val) => val != '' || '请输入重量']"
+        @blur="onWeightBlur"
+        ref="weightInputRef"
       />
-      <q-input label="日期" filled v-model="form.record_date" mask="####-##-##">
+      <q-input label="日期" filled v-model="form.record_date" mask="####-##-##" style="max-width: 300px">
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
             <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -84,7 +81,7 @@ import { Food, getRecentFoods } from "@/api/food";
 import Message from "@/utils/message";
 import PinyinMatch from "pinyin-match";
 import CreateFoodDialog from "./CreateFoodDialog.vue";
-import { date } from "quasar";
+import { QForm, QInput, date } from "quasar";
 import { formatDateToDay } from "@/utils/date-utils";
 import { useCanteenStore } from "@/stores/canteen";
 import { useFoodStore } from "@/stores/food";
@@ -94,6 +91,8 @@ const canteenStore = useCanteenStore();
 const foodStore = useFoodStore();
 const weighStore = useWeighStore();
 
+const formRef = ref<InstanceType<typeof QForm>>();
+const weightInputRef = ref<InstanceType<typeof QInput>>()
 const createFoodDialogRef = ref<InstanceType<typeof CreateFoodDialog>>();
 
 const form = reactive({
@@ -108,10 +107,9 @@ const canteenOptions = computed(() =>
   canteenStore.canteens.map((opt) => ({ label: `${opt.name} (${opt.aliases})`, value: opt }))
 );
 
-watch(
-  () => canteenStore.canteens,
-  () => (form.canteen ??= canteenStore.canteens[0])
-);
+watchEffect(() => {
+  form.canteen ??= canteenStore.canteens[0];
+});
 
 const foodFilterFn = (val: string, update: any, abort: any) => {
   update(() => {
@@ -131,6 +129,15 @@ const onSelectRecentFood = (food: Food) => {
   form.food = food;
 };
 
+const onWeightBlur = () => {
+  if (form.weight) {
+    form.weight = eval(form.weight?.toString());
+    // if (typeof (form.weight) != "number") {
+    //   weightInputRef.value?.error("请输入数值");
+    // }
+  }
+};
+
 const onAddFood = () => {
   createFoodDialogRef.value?.show().then((food) => {
     form.food = food;
@@ -148,6 +155,7 @@ const onSubmit = async () => {
     Message.success("成功创建记录");
     form.food = undefined;
     form.weight = undefined;
+    formRef.value?.reset();
     await fetchRecentFoods();
   } catch (e) {
     Message.error("创建失败");
