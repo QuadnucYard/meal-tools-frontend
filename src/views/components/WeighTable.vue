@@ -21,6 +21,22 @@
         </template>
       </q-input>
     </template>
+    <template #body-cell-canteen="props">
+      <q-td :props="props">
+        {{ props.col.field(props.row) }}
+        <q-popup-edit v-model="props.row.canteen_id" auto-save :cover="false" #="scope">
+          <q-select v-model="scope.value" dense options-dense emit-value map-options :options="canteenStore.options" />
+        </q-popup-edit>
+      </q-td>
+    </template>
+    <template #body-cell-food="props">
+      <q-td :props="props">
+        {{ props.col.field(props.row) }}
+        <q-popup-edit v-model="props.row.food_id" auto-save :cover="false" #="scope">
+          <q-select v-model="scope.value" dense options-dense emit-value map-options :options="foodStore.options" />
+        </q-popup-edit>
+      </q-td>
+    </template>
     <template #body-cell-weight="props">
       <q-td :props="props">
         {{ props.row.weight }}

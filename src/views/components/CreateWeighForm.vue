@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 40px">
     <q-form class="q-gutter-md" style="max-width: 500px" @submit="onSubmit" ref="formRef">
-      <q-btn-toggle label="食堂" v-model="form.canteen" toggle-color="primary" :options="canteenOptions" />
+      <q-btn-toggle label="食堂" v-model="form.canteen" toggle-color="primary" :options="canteenStore.options" />
       <q-select
         clearable
         options-dense
@@ -103,9 +103,6 @@ const form = reactive({
   record_date: formatDateToDay(new Date()),
 });
 const recentFoods = ref<Food[]>([]);
-const canteenOptions = computed(() =>
-  canteenStore.canteens.map((opt) => ({ label: `${opt.name} (${opt.aliases})`, value: opt }))
-);
 
 watchEffect(() => {
   form.canteen ??= canteenStore.canteens[0];

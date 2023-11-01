@@ -6,6 +6,16 @@ export const useFoodStore = defineStore("food", () => {
   const foods = ref<Food[]>([]);
   const foodDict = ref<{ [id: int]: Food }>({});
 
+  const options = computed(() =>
+    foods.value.map((opt) => ({
+      label:
+        opt.name +
+        (opt.aliases.length > 0 ? ` (${opt.aliases})` : "") +
+        (opt.price > 0 ? ` [￥${opt.price / 10}]` : ""),
+      value: opt.id,
+    }))
+  );
+
   const get = (id: int) => foodDict.value[id];
 
   const create = async (food: FoodCreate) => {
@@ -26,5 +36,5 @@ export const useFoodStore = defineStore("food", () => {
     foodDict.value = _.keyBy(v, "id");
   });
 
-  return { foods, create, get, update };
+  return { foods, create, get, options, update };
 });
