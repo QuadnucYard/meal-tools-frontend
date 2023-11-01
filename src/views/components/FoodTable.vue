@@ -13,6 +13,13 @@
     :filter="filter"
     :loading="loading"
   >
+    <template v-slot:top-right>
+      <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+    </template>
     <template #body-cell-name="props">
       <q-td :props="props">
         {{ props.row.name }}
