@@ -70,6 +70,7 @@ const columns = columnDefaults(
     { name: "price", label: "价格", format: (val: int) => `￥${val / 10}` },
     { name: "desc", label: "描述" },
     { name: "create_time", label: "创建时间", format: formatDate },
+    { name: "avg_weight", label: "平均重量（g）", format: (val: float) => val.toFixed(2) },
     { name: "handle", label: "操作", sortable: false },
   ],
   { sortable: true, align: "center" }

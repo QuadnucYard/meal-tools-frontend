@@ -7,6 +7,7 @@ export interface Food {
   price: int;
   desc: string;
   create_time: string;
+  avg_weight: float;
 }
 
 export type FoodCreate = Pick<Food, "name" | "aliases" | "price" | "desc">;
