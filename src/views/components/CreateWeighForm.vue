@@ -100,7 +100,7 @@ const createFoodDialogRef = ref<InstanceType<typeof CreateFoodDialog>>();
 
 const form = reactive({
   foodOptions: [] as Food[],
-  canteen: undefined as Canteen | undefined,
+  canteen: undefined as int | undefined,
   food: undefined as Food | undefined,
   weight: undefined as int | undefined,
   record_date: formatDateToDay(new Date()),
@@ -108,7 +108,7 @@ const form = reactive({
 const recentFoods = ref<Food[]>([]);
 
 watchEffect(() => {
-  form.canteen ??= canteenStore.canteens[0];
+  form.canteen ??= canteenStore.canteens[0]?.id;
 });
 
 const foodFilterFn = (val: string, update: any, abort: any) => {
@@ -147,7 +147,7 @@ const onAddFood = () => {
 const onSubmit = async () => {
   try {
     await weighStore.create({
-      canteen_id: form.canteen!.id,
+      canteen_id: form.canteen!,
       food_id: form.food!.id,
       weight: form.weight!,
       record_date: form.record_date,
