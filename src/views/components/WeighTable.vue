@@ -66,6 +66,8 @@
 </template>
 
 <script setup lang="ts">
+import { QTable } from "quasar";
+
 import { Weigh } from "@/api/weigh";
 import { useCanteenStore } from "@/stores/canteen";
 import { useFoodStore } from "@/stores/food";
@@ -73,7 +75,6 @@ import { useWeighStore } from "@/stores/weigh";
 import { formatDate } from "@/utils/date-utils";
 import Message from "@/utils/message";
 import { columnDefaults } from "@/utils/table-utils";
-import { QTable } from "quasar";
 
 const canteenStore = useCanteenStore();
 const foodStore = useFoodStore();

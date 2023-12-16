@@ -24,7 +24,7 @@ const props = defineProps<{
   labelFn: (t: T) => string;
 }>();
 
-const modelValue = defineModel<T[]>({ required: true});
+const modelValue = defineModel<T[]>({ required: true });
 </script>
 
 <style scoped></style>

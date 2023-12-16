@@ -1,7 +1,6 @@
-import * as path from "path";
-
 import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 import vue from "@vitejs/plugin-vue";
+import * as path from "path";
 import AutoImport from "unplugin-auto-import/vite";
 import { QuasarResolver } from "unplugin-vue-components/resolvers";
 import Components from "unplugin-vue-components/vite";
@@ -23,7 +22,7 @@ export default ({ mode }: ConfigEnv) =>
     },
     css: {
       preprocessorOptions: {
-        scss: { additionalData: `` },
+        scss: { additionalData: "" },
       },
       postcss: {
         plugins: [require("tailwindcss"), require("autoprefixer")],

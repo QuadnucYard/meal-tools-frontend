@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import CreateWeighForm from "./components/CreateWeighForm.vue";
-import FoodTable from "./components/FoodTable.vue"
+import FoodTable from "./components/FoodTable.vue";
 import WeighTable from "./components/WeighTable.vue";
 </script>
 

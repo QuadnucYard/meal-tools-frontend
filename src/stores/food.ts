@@ -1,6 +1,7 @@
-import { Food, FoodCreate, createFood, getFoods, updateFood } from "@/api/food";
 import _ from "lodash-es";
 import { defineStore } from "pinia";
+
+import { Food, FoodCreate, createFood, getFoods, updateFood } from "@/api/food";
 
 export const useFoodStore = defineStore("food", () => {
   const foods = ref<Food[]>([]);

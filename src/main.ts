@@ -1,16 +1,15 @@
+import "@quasar/extras/material-icons-outlined/material-icons-outlined.css";
+// Import icon libraries
+import "@quasar/extras/material-icons/material-icons.css";
 import { AppFullscreen, Dialog, Notify, Quasar } from "quasar";
+// Import Quasar css
+import "quasar/src/css/index.sass";
 import { createApp } from "vue";
+import VueCookies from "vue-cookies";
+
 import App from "./App.vue";
 import router from "./router";
 import pinia from "./stores";
-import VueCookies from "vue-cookies";
-
-// Import icon libraries
-import "@quasar/extras/material-icons/material-icons.css";
-import "@quasar/extras/material-icons-outlined/material-icons-outlined.css";
-
-// Import Quasar css
-import "quasar/src/css/index.sass";
 
 // import "./styles/index.scss";
 // import "./styles/app.sass";

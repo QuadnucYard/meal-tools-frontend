@@ -1,7 +1,8 @@
-import { Weigh, WeighCreate, createWeigh, deleteWeigh, getWeighs, updateWeigh } from "@/api/weigh";
-import "@/utils/array-extensions";
 import _ from "lodash-es";
 import { defineStore } from "pinia";
+
+import { Weigh, WeighCreate, createWeigh, deleteWeigh, getWeighs, updateWeigh } from "@/api/weigh";
+import "@/utils/array-extensions";
 
 export const useWeighStore = defineStore("weigh", () => {
   const weighs = ref<Weigh[]>([]);

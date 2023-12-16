@@ -25,8 +25,8 @@
 </template>
 
 <script setup lang="ts">
-import UIConfig from "@/components/common/UIConfig.vue";
 import AppToolBar from "@/components/common/AppToolBar.vue";
+import UIConfig from "@/components/common/UIConfig.vue";
 
 const leftDrawerOpen = ref(false);
 const rightDrawerOpen = ref(false);

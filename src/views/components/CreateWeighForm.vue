@@ -70,7 +70,7 @@
             icon="arrow_forward"
             @click="form.record_date = formatDateToDay(date.addToDate(form.record_date, { days: 1 }))"
           />
-          <q-btn round dense flat icon="access_time" @click="autoDate"/>
+          <q-btn round dense flat icon="access_time" @click="autoDate" />
         </template>
       </q-input>
       <q-btn color="primary" type="submit">创建</q-btn>
@@ -80,17 +80,18 @@
 </template>
 
 <script setup lang="ts">
-import { Canteen } from "@/api/canteen";
-import { Food, getRecentFoods } from "@/api/food";
-import Message from "@/utils/message";
+import _ from "lodash-es";
 import PinyinMatch from "pinyin-match";
-import CreateFoodDialog from "./CreateFoodDialog.vue";
 import { QForm, QInput, date } from "quasar";
-import { formatDateToDay } from "@/utils/date-utils";
+
+import { Food, getRecentFoods } from "@/api/food";
 import { useCanteenStore } from "@/stores/canteen";
 import { useFoodStore } from "@/stores/food";
 import { useWeighStore } from "@/stores/weigh";
-import _ from "lodash-es";
+import { formatDateToDay } from "@/utils/date-utils";
+import Message from "@/utils/message";
+
+import CreateFoodDialog from "./CreateFoodDialog.vue";
 
 const canteenStore = useCanteenStore();
 const foodStore = useFoodStore();
@@ -132,7 +133,9 @@ const onSelectRecentFood = (food: Food) => {
 };
 
 const autoDate = () => {
-  form.record_date = formatDateToDay(date.addToDate(_.maxBy(weighStore.weighs, (w) => w.record_date)!.record_date, { days: 1 }));
+  form.record_date = formatDateToDay(
+    date.addToDate(_.maxBy(weighStore.weighs, (w) => w.record_date)!.record_date, { days: 1 })
+  );
 };
 
 const onWeightBlur = () => {

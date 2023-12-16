@@ -60,75 +60,9 @@ export {}; // this file needs to be a module
     };
   }
 
-    if (!Array.prototype.empty) {
-      Array.prototype.empty = function (): boolean {
-        return this.length == 0;
-      };
-    }
-
-  if (!Array.prototype.orderBy) {
-    Array.prototype.orderBy = function (propertyExpression: (item: any) => any) {
-      let result = <any>[];
-      const compareFunction = (item1: any, item2: any): number => {
-        if (propertyExpression(item1) > propertyExpression(item2)) return 1;
-        if (propertyExpression(item2) > propertyExpression(item1)) return -1;
-        return 0;
-      };
-      for (let i = 0; i < this.length; i++) {
-        return this.sort(compareFunction);
-      }
-      return result;
-    };
-  }
-
-  if (!Array.prototype.orderByDescending) {
-    Array.prototype.orderByDescending = function (propertyExpression: (item: any) => any) {
-      let result = <any>[];
-      const compareFunction = (item1: any, item2: any): number => {
-        if (propertyExpression(item1) > propertyExpression(item2)) return -1;
-        if (propertyExpression(item2) > propertyExpression(item1)) return 1;
-        return 0;
-      };
-      for (let i = 0; i < this.length; i++) {
-        return this.sort(compareFunction);
-      }
-      return result;
-    };
-  }
-
-  if (!Array.prototype.orderByMany) {
-    Array.prototype.orderByMany = function (propertyExpressions: [(item: any) => any]) {
-      let result = <any>[];
-      const compareFunction = (item1: any, item2: any): number => {
-        for (let i = 0; i < propertyExpressions.length; i++) {
-          let propertyExpression = propertyExpressions[i];
-          if (propertyExpression(item1) > propertyExpression(item2)) return 1;
-          if (propertyExpression(item2) > propertyExpression(item1)) return -1;
-        }
-        return 0;
-      };
-      for (let i = 0; i < this.length; i++) {
-        return this.sort(compareFunction);
-      }
-      return result;
-    };
-  }
-
-  if (!Array.prototype.orderByManyDescending) {
-    Array.prototype.orderByManyDescending = function (propertyExpressions: [(item: any) => any]) {
-      let result = <any>[];
-      const compareFunction = (item1: any, item2: any): number => {
-        for (let i = 0; i < propertyExpressions.length; i++) {
-          let propertyExpression = propertyExpressions[i];
-          if (propertyExpression(item1) > propertyExpression(item2)) return -1;
-          if (propertyExpression(item2) > propertyExpression(item1)) return 1;
-        }
-        return 0;
-      };
-      for (let i = 0; i < this.length; i++) {
-        return this.sort(compareFunction);
-      }
-      return result;
+  if (!Array.prototype.empty) {
+    Array.prototype.empty = function (): boolean {
+      return this.length == 0;
     };
   }
 })();

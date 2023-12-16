@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 
-import Message from "@/utils/message";
 import { redirectLogin } from "@/router";
+import Message from "@/utils/message";
 
 function format422(data: any, detail: { loc: string[]; msg: string; type: string }[]) {
   return detail.map((t) => t.msg + ".").join(" ");
