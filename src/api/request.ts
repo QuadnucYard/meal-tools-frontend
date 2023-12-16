@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 
-import { redirectLogin } from "@/router";
+import { redirectLogin } from "@/router/utils";
 import Message from "@/utils/message";
 
 function format422(data: any, detail: { loc: string[]; msg: string; type: string }[]) {

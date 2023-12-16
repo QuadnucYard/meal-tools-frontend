@@ -109,6 +109,9 @@ devDependencies:
   vite:
     specifier: ^5.0.10
     version: 5.0.10(@types/node@20.10.4)(sass@1.69.5)
+  vite-plugin-circular-dependency:
+    specifier: ^0.2.1
+    version: 0.2.1
   vite-plugin-compression:
     specifier: ^0.5.1
     version: 0.5.1(vite@5.0.10)
@@ -3079,6 +3082,15 @@ packages:
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==, tarball: https://registry.npmmirror.com/util-deprecate/-/util-deprecate-1.0.2.tgz}
+    dev: true
+
+  /vite-plugin-circular-dependency@0.2.1:
+    resolution: {integrity: sha512-NriKEoxJKn5CaAMw5JT1DYMm4KntsCfqcVeGF7ssOXRQVqoxmtUl6hS8AH+sellIKZf51G53v/CyDNt5LXj1NA==, tarball: https://registry.npmmirror.com/vite-plugin-circular-dependency/-/vite-plugin-circular-dependency-0.2.1.tgz}
+    dependencies:
+      '@rollup/pluginutils': 5.1.0
+      chalk: 4.1.2
+    transitivePeerDependencies:
+      - rollup
     dev: true
 
   /vite-plugin-compression@0.5.1(vite@5.0.10):

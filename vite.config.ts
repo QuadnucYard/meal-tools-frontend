@@ -5,6 +5,7 @@ import AutoImport from "unplugin-auto-import/vite";
 import { QuasarResolver } from "unplugin-vue-components/resolvers";
 import Components from "unplugin-vue-components/vite";
 import { ConfigEnv, defineConfig, loadEnv } from "vite";
+import circleDependency from "vite-plugin-circular-dependency";
 import viteCompression from "vite-plugin-compression";
 
 const pathSrc = path.resolve(__dirname, "src");
@@ -59,6 +60,8 @@ export default ({ mode }: ConfigEnv) =>
         resolvers: [QuasarResolver()],
         dts: "src/components.d.ts",
       }),
+
+      circleDependency({}),
 
       // Icons({ autoInstall: true }),
 

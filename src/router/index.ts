@@ -7,6 +7,7 @@ const router: Router = createRouter({
   routes,
 });
 
+// Router guard
 router.beforeEach(async (to, from, next) => {
   console.log("beforeEach", from, to, to.meta);
   next();
@@ -19,7 +20,3 @@ export const createDefaultRouter: (routes: Array<RouteRecordRaw>) => Router = (r
     history: createWebHistory(),
     routes,
   });
-
-export function redirectLogin() {
-  router.push({ name: "login", query: { redirect: router.currentRoute.value.fullPath } });
-}
