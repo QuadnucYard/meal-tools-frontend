@@ -70,6 +70,7 @@
             icon="arrow_forward"
             @click="form.record_date = formatDateToDay(date.addToDate(form.record_date, { days: 1 }))"
           />
+          <q-btn round dense flat icon="access_time" @click="autoDate"/>
         </template>
       </q-input>
       <q-btn color="primary" type="submit">创建</q-btn>
@@ -89,6 +90,7 @@ import { formatDateToDay } from "@/utils/date-utils";
 import { useCanteenStore } from "@/stores/canteen";
 import { useFoodStore } from "@/stores/food";
 import { useWeighStore } from "@/stores/weigh";
+import _ from "lodash-es";
 
 const canteenStore = useCanteenStore();
 const foodStore = useFoodStore();
@@ -127,6 +129,10 @@ const fetchRecentFoods = async () => {
 
 const onSelectRecentFood = (food: Food) => {
   form.food = food;
+};
+
+const autoDate = () => {
+  form.record_date = formatDateToDay(date.addToDate(_.maxBy(weighStore.weighs, (w) => w.record_date)!.record_date, { days: 1 }));
 };
 
 const onWeightBlur = () => {
