@@ -7,3 +7,8 @@
 **/*.sh
 
 /public/*
+
+pnpm-lock.yaml
+auto-imports.d.ts
+components.d.ts
+env.d.ts
