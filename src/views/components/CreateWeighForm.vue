@@ -24,7 +24,7 @@
         <span class="text-grey" style="width: 5em">最近</span>
         <span class="q-gutter-x-md">
           <span
-            v-for="food in recentFoods"
+            v-for="food in foodStore.recentFoods"
             class="text-blue cursor-pointer inline-block"
             @click="onSelectRecentFood(food)"
           >
@@ -44,7 +44,16 @@
         :rules="[(val) => val != '' || '请输入重量']"
         @blur="onWeightBlur"
         ref="weightInputRef"
-      />
+      >
+        <template v-slot:hint>
+          <div class="text-sm">
+            <span class="text-grey">上一个：</span>
+            <span v-if="form.prevWeight" class="text-blue cursor-pointer inline-block" @click="onPickWeight">
+              {{ form.prevWeight }}
+            </span>
+          </div>
+        </template>
+      </q-input>
       <q-input label="日期" filled v-model="form.record_date" mask="####-##-##" style="max-width: 300px">
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
@@ -84,15 +93,17 @@ import _ from "lodash-es";
 import PinyinMatch from "pinyin-match";
 import { QForm, QInput, date } from "quasar";
 
-import { Food, getRecentFoods } from "@/api/food";
+import { Food } from "@/api/food";
 import { useCanteenStore } from "@/stores/canteen";
 import { useFoodStore } from "@/stores/food";
+import { useSettingsStore } from "@/stores/settings";
 import { useWeighStore } from "@/stores/weigh";
 import { formatDateToDay } from "@/utils/date-utils";
 import Message from "@/utils/message";
 
 import CreateFoodDialog from "./CreateFoodDialog.vue";
 
+const { settings } = useSettingsStore();
 const canteenStore = useCanteenStore();
 const foodStore = useFoodStore();
 const weighStore = useWeighStore();
@@ -106,9 +117,9 @@ const form = reactive({
   canteen: undefined as int | undefined,
   food: undefined as Food | undefined,
   weight: undefined as int | undefined,
+  prevWeight: undefined as int | undefined,
   record_date: formatDateToDay(new Date()),
 });
-const recentFoods = ref<Food[]>([]);
 
 watchEffect(() => {
   form.canteen ??= canteenStore.canteens[0]?.id;
@@ -124,12 +135,16 @@ const foodFilterFn = (val: string, update: any, abort: any) => {
   });
 };
 
-const fetchRecentFoods = async () => {
-  recentFoods.value = await getRecentFoods();
-};
-
 const onSelectRecentFood = (food: Food) => {
   form.food = food;
+};
+
+const onPickWeight = () => {
+  if (form.prevWeight) {
+    form.weight! += form.prevWeight;
+    weightInputRef.value?.focus();
+    weightInputRef.value?.blur();
+  }
 };
 
 const autoDate = () => {
@@ -163,16 +178,17 @@ const onSubmit = async () => {
     });
     Message.success("成功创建记录");
     form.food = undefined;
+    form.prevWeight = form.weight;
     form.weight = undefined;
     formRef.value?.reset();
-    await fetchRecentFoods();
+    await foodStore.fetchRecent(settings.recentFoodLimit);
   } catch (e) {
     Message.error("创建失败");
   }
 };
 
 onMounted(async () => {
-  await fetchRecentFoods();
+  await foodStore.fetchRecent(settings.recentFoodLimit);
 });
 </script>
 
