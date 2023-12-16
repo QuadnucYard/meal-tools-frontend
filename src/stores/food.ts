@@ -3,7 +3,11 @@ import { defineStore } from "pinia";
 
 import { Food, FoodCreate, createFood, getFoods, getRecentFoods, updateFood } from "@/api/food";
 
+import { useSettingsStore } from "./settings";
+
 export const useFoodStore = defineStore("food", () => {
+  const { settings } = useSettingsStore();
+
   const foods = ref<Food[]>([]);
   const foodDict = ref<{ [id: int]: Food }>({});
   const recentFoods = ref<Food[]>([]);
@@ -33,14 +37,18 @@ export const useFoodStore = defineStore("food", () => {
     return result;
   };
 
+  const fetchRecent = async (limit?: int) => {
+    recentFoods.value = await getRecentFoods(limit ?? settings.recentFoodLimit);
+  };
+
   getFoods().then((v) => {
     foods.value = v;
     foodDict.value = _.keyBy(v, "id");
   });
 
-  const fetchRecent = async (limit: int) => {
-    recentFoods.value = await getRecentFoods(limit);
-  };
+  fetchRecent();
+
+  watch(() => settings.recentFoodLimit, fetchRecent);
 
   return { foods, recentFoods, options, create, get, update, fetchRecent };
 });

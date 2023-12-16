@@ -20,15 +20,35 @@
         </div>
       </q-card-section>
     </q-card>
+
+    <q-card square flat>
+      <q-card-section>
+        <div class="text-subtitle2">其他</div>
+      </q-card-section>
+      <q-card-section>
+        <q-input
+          label="最近食物数显示"
+          v-model.number="settings.recentFoodLimit"
+          type="number"
+          filled
+          style="max-width: 200px"
+        />
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
 <script setup lang="ts">
 import { colors, getCssVar, setCssVar } from "quasar";
 
+import { useSettingsStore } from "@/stores/settings";
+
 const themeColors = ["#7c00d0", "#df1256", "#ff9800", "#1976D2", "#4caf50", "#795548"];
 
 const dark = ref(false);
+
+const { settings } = useSettingsStore();
+
 function changePrimaryColor(color: string) {
   const { lighten } = colors;
   setCssVar("primary", color);

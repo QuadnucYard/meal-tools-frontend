@@ -21,7 +21,7 @@
         </template>
       </q-select>
       <div style="display: flex">
-        <span class="text-grey" style="width: 5em">最近</span>
+        <span class="text-grey" style="width: 5em; min-width: 3em">最近</span>
         <span class="q-gutter-x-md">
           <span
             v-for="food in foodStore.recentFoods"
@@ -96,14 +96,12 @@ import { QForm, QInput, date } from "quasar";
 import { Food } from "@/api/food";
 import { useCanteenStore } from "@/stores/canteen";
 import { useFoodStore } from "@/stores/food";
-import { useSettingsStore } from "@/stores/settings";
 import { useWeighStore } from "@/stores/weigh";
 import { formatDateToDay } from "@/utils/date-utils";
 import Message from "@/utils/message";
 
 import CreateFoodDialog from "./CreateFoodDialog.vue";
 
-const { settings } = useSettingsStore();
 const canteenStore = useCanteenStore();
 const foodStore = useFoodStore();
 const weighStore = useWeighStore();
@@ -181,15 +179,11 @@ const onSubmit = async () => {
     form.prevWeight = form.weight;
     form.weight = undefined;
     formRef.value?.reset();
-    await foodStore.fetchRecent(settings.recentFoodLimit);
+    await foodStore.fetchRecent();
   } catch (e) {
     Message.error("创建失败");
   }
 };
-
-onMounted(async () => {
-  await foodStore.fetchRecent(settings.recentFoodLimit);
-});
 </script>
 
 <style scoped></style>
