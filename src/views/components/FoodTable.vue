@@ -11,6 +11,7 @@
     dense
     class="my-sticky-table-handle"
     :filter="filter"
+    :filter-method="filterFn"
     :loading="loading"
   >
     <template v-slot:top-right>
@@ -58,6 +59,7 @@ import { useFoodStore } from "@/stores/food";
 import { formatDate } from "@/utils/date-utils";
 import Message from "@/utils/message";
 import { columnDefaults } from "@/utils/table-utils";
+import PinyinMatch from "pinyin-match";
 import { QTable } from "quasar";
 
 const foodStore = useFoodStore();
@@ -80,6 +82,18 @@ const tableRef = ref<QTable>();
 
 const loading = ref(false);
 const filter = ref("");
+
+const filterFn = (
+  rows: readonly any[],
+  terms: string,
+  cols: readonly any[],
+  getCellValue: (col: any, row: any) => any
+) => {
+  // 参数就是传给table的行列和filter
+  return rows.filter(
+    (r: Food) => PinyinMatch.match(r.name, terms) || r.aliases.some((a) => PinyinMatch.match(a, terms))
+  );
+};
 
 const onUpdateRow = async (row: Food) => {
   await foodStore.update(row);
