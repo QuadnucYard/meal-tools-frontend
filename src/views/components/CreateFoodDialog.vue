@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { Food, FoodCreate } from "@/api/food";
+import type { Food, FoodCreate } from "@/interfaces";
 import { useFoodStore } from "@/stores/food";
 import Message from "@/utils/message";
 

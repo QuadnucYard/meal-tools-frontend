@@ -1,11 +1,11 @@
 {
   "name": "meal-tools",
   "description": "",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "scripts": {
     "dev": "vite --host",
     "build": "vue-tsc --noEmit && vite build",
-    "build2": "vite build",
+    "check": "vue-tsc --noEmit",
     "preview": "vite preview",
     "prepare": "husky install"
   },

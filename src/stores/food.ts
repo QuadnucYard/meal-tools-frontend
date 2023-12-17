@@ -1,7 +1,8 @@
 import _ from "lodash-es";
 import { defineStore } from "pinia";
 
-import { Food, FoodCreate, createFood, getFoods, getRecentFoods, updateFood } from "@/api/food";
+import { createFood, getFoods, getRecentFoods, updateFood } from "@/api/food";
+import type { Food, FoodCreate } from "@/interfaces";
 
 import { useSettingsStore } from "./settings";
 

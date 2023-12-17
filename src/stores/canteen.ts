@@ -1,7 +1,8 @@
 import _ from "lodash-es";
 import { defineStore } from "pinia";
 
-import { Canteen, getCanteens } from "@/api/canteen";
+import { getCanteens } from "@/api/canteen";
+import { Canteen } from "@/interfaces";
 
 export const useCanteenStore = defineStore("canteen", () => {
   const canteens = ref<Canteen[]>([]);

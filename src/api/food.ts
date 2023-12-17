@@ -1,16 +1,6 @@
+import type { Food, FoodCreate } from "@/interfaces";
+
 import api from "./request";
-
-export interface Food {
-  id: int;
-  name: string;
-  aliases: string[];
-  price: int;
-  desc: string;
-  create_time: string;
-  avg_weight: float;
-}
-
-export type FoodCreate = Pick<Food, "name" | "aliases" | "price" | "desc">;
 
 export async function getFoods() {
   return (await api.get<Food[]>("/food")).data;

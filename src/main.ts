@@ -7,13 +7,14 @@ import "quasar/src/css/index.sass";
 import { createApp } from "vue";
 import VueCookies from "vue-cookies";
 
-import App from "./App.vue";
-import router from "./router";
-import pinia from "./stores";
-
 // import "./styles/index.scss";
 // import "./styles/app.sass";
 // import "./styles/theme.scss";
+import "@/utils/array-extensions";
+
+import App from "./App.vue";
+import router from "./router";
+import pinia from "./stores";
 
 const app = createApp(App);
 app.use(router).use(pinia);

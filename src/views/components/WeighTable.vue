@@ -68,7 +68,7 @@
 <script setup lang="ts">
 import { QTable } from "quasar";
 
-import { Weigh } from "@/api/weigh";
+import type { Weigh } from "@/interfaces";
 import { useCanteenStore } from "@/stores/canteen";
 import { useFoodStore } from "@/stores/food";
 import { useWeighStore } from "@/stores/weigh";

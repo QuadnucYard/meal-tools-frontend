@@ -57,7 +57,7 @@
 import PinyinMatch from "pinyin-match";
 import { QTable } from "quasar";
 
-import { Food } from "@/api/food";
+import type { Food } from "@/interfaces";
 import { useFoodStore } from "@/stores/food";
 import { formatDate } from "@/utils/date-utils";
 import Message from "@/utils/message";

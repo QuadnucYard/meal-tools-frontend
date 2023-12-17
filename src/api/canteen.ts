@@ -1,10 +1,6 @@
-import api from "./request";
+import type { Canteen } from "@/interfaces";
 
-export interface Canteen {
-  id: int;
-  name: string;
-  aliases: string[];
-}
+import api from "./request";
 
 export async function getCanteens() {
   return (await api.get<Canteen[]>("/canteen")).data;

@@ -93,7 +93,7 @@ import _ from "lodash-es";
 import PinyinMatch from "pinyin-match";
 import { QForm, QInput, date } from "quasar";
 
-import { Food } from "@/api/food";
+import type { Food } from "@/interfaces";
 import { useCanteenStore } from "@/stores/canteen";
 import { useFoodStore } from "@/stores/food";
 import { useWeighStore } from "@/stores/weigh";
