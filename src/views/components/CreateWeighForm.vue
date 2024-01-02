@@ -82,6 +82,7 @@
           <q-btn round dense flat icon="access_time" @click="autoDate" />
         </template>
       </q-input>
+      <image-upload-box ref="uploaderRef" />
       <q-btn color="primary" type="submit">创建</q-btn>
     </q-form>
   </div>
@@ -93,6 +94,7 @@ import _ from "lodash-es";
 import PinyinMatch from "pinyin-match";
 import { QForm, QInput, date } from "quasar";
 
+import ImageUploadBox from "@/components/tool/ImageUploadBox.vue";
 import type { Food } from "@/interfaces";
 import { useCanteenStore } from "@/stores/canteen";
 import { useFoodStore } from "@/stores/food";
@@ -109,6 +111,7 @@ const weighStore = useWeighStore();
 const formRef = ref<InstanceType<typeof QForm>>();
 const weightInputRef = ref<InstanceType<typeof QInput>>();
 const createFoodDialogRef = ref<InstanceType<typeof CreateFoodDialog>>();
+const uploaderRef = ref<InstanceType<typeof ImageUploadBox>>();
 
 const form = reactive({
   foodOptions: [] as Food[],
@@ -168,11 +171,13 @@ const onAddFood = () => {
 
 const onSubmit = async () => {
   try {
+    const image = await uploaderRef.value!.upload();
     await weighStore.create({
       canteen_id: form.canteen!,
       food_id: form.food!.id,
       weight: form.weight!,
       record_date: form.record_date,
+      image,
     });
     Message.success("成功创建记录");
     form.food = undefined;

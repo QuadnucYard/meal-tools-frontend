@@ -21,17 +21,28 @@
         </template>
       </q-input>
     </template>
-    <template #body-cell-canteen="props">
+    <template #body-cell-image="props: { row: Weigh }">
       <q-td :props="props">
-        {{ props.col.field(props.row) }}
+        <q-icon
+          :name="props.row.image ? 'camera_alt' : 'o_camera_alt'"
+          :color="props.row.image && 'primary'"
+          class="cursor-pointer"
+          @click="startUpdateImage(props.row)"
+        />
+        <image-preview-tooltip v-if="props.row.image" :images="['/' + props.row.image]" />
+      </q-td>
+    </template>
+    <template #body-cell-canteen="props: { row: Weigh }">
+      <q-td :props="props">
+        {{ canteenStore.get(props.row.canteen_id)?.name }}
         <q-popup-edit v-model="props.row.canteen_id" auto-save :cover="false" #="scope">
           <q-select v-model="scope.value" dense options-dense emit-value map-options :options="canteenStore.options" />
         </q-popup-edit>
       </q-td>
     </template>
-    <template #body-cell-food="props">
+    <template #body-cell-food="props: { row: Weigh }">
       <q-td :props="props">
-        {{ props.col.field(props.row) }}
+        {{ foodStore.get(props.row.food_id)?.name }}
         <q-tooltip v-if="foodStore.get(props.row.food_id)?.desc.length > 0" :offset="[0, 0]">
           {{ foodStore.get(props.row.food_id)?.desc }}
         </q-tooltip>
@@ -40,7 +51,7 @@
         </q-popup-edit>
       </q-td>
     </template>
-    <template #body-cell-weight="props">
+    <template #body-cell-weight="props: { row: Weigh }">
       <q-td :props="props">
         {{ props.row.weight }}
         <q-popup-edit v-model="props.row.weight" auto-save :cover="false" #="scope">
@@ -48,7 +59,7 @@
         </q-popup-edit>
       </q-td>
     </template>
-    <template #body-cell-record_date="props">
+    <template #body-cell-record_date="props: { row: Weigh }">
       <q-td :props="props">
         {{ props.row.record_date }}
         <q-popup-proxy auto-save :cover="false">
@@ -56,13 +67,14 @@
         </q-popup-proxy>
       </q-td>
     </template>
-    <template #body-cell-handle="props">
+    <template #body-cell-handle="props: { row: Weigh }">
       <q-td :props="props">
         <q-btn flat dense round color="blue" icon="edit" size="sm" @click="onUpdateRow(props.row)" />
         <q-btn flat dense round color="red" icon="delete" size="sm" @click="onDeleteRow(props.row)" />
       </q-td>
     </template>
   </q-table>
+  <weigh-image-update-dialog ref="imageUpdateDialogRef" />
 </template>
 
 <script setup lang="ts">
@@ -76,6 +88,8 @@ import { formatDate } from "@/utils/date-utils";
 import Message from "@/utils/message";
 import { columnDefaults } from "@/utils/table-utils";
 
+import WeighImageUpdateDialog from "./UpdateWeighImageDialog.vue";
+
 const canteenStore = useCanteenStore();
 const foodStore = useFoodStore();
 const weighStore = useWeighStore();
@@ -83,11 +97,13 @@ const weighStore = useWeighStore();
 const columns = columnDefaults(
   [
     { name: "id", label: "ID" },
-    { name: "canteen", label: "食堂", field: (row: Weigh) => canteenStore.get(row.canteen_id)?.name },
-    { name: "food", label: "食物", field: (row: Weigh) => foodStore.get(row.food_id)?.name },
+    { name: "image", label: "图片", sortable: false },
+    { name: "canteen", label: "食堂" },
+    { name: "food", label: "食物" },
     { name: "weight", label: "重量 (g)" },
     { name: "record_date", label: "记录时间" },
     { name: "create_time", label: "创建时间", format: formatDate },
+    { name: "update_time", label: "更新时间", format: formatDate },
     { name: "handle", label: "操作", sortable: false },
   ],
   { sortable: true, align: "center" }
@@ -101,6 +117,7 @@ const initialPagination = {
 };
 
 const tableRef = ref<QTable>();
+const imageUpdateDialogRef = ref<InstanceType<typeof WeighImageUpdateDialog>>();
 
 const loading = ref(false);
 const filter = ref("");
@@ -112,6 +129,10 @@ const onUpdateRow = async (row: Weigh) => {
 const onDeleteRow = async (row: Weigh) => {
   await weighStore.remove(row);
   Message.success("成功删除记录");
+};
+
+const startUpdateImage = (row: Weigh) => {
+  imageUpdateDialogRef.value?.show(row);
 };
 </script>
 

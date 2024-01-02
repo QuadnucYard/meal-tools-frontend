@@ -9,6 +9,9 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppToolBar: typeof import('./components/common/AppToolBar.vue')['default']
     DetailView: typeof import('./components/common/DetailView.vue')['default']
+    ImagePreviewTooltip: typeof import('./components/common/ImagePreviewTooltip.vue')['default']
+    ImageUploadArray: typeof import('./components/tool/ImageUploadArray.vue')['default']
+    ImageUploadBox: typeof import('./components/tool/ImageUploadBox.vue')['default']
     InputDateTime: typeof import('./components/common/InputDateTime.vue')['default']
     MemberSelect: typeof import('./components/common/MemberSelect.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

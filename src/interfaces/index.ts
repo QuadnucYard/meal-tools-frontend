@@ -35,7 +35,9 @@ export interface Food {
   aliases: string[];
   price: int;
   desc: string;
+  images: string[];
   create_time: string;
+  update_time: string;
   avg_weight: float;
 }
 
@@ -45,6 +47,7 @@ interface WeighBase {
   canteen_id: int;
   food_id: int;
   weight: int;
+  image?: string;
 }
 
 export interface WeighCreate extends WeighBase {
@@ -55,4 +58,5 @@ export interface Weigh extends WeighBase {
   id: int;
   record_date: string;
   create_time: string;
+  update_time: string;
 }
