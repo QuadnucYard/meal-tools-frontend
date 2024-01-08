@@ -12,14 +12,11 @@
     class="my-sticky-table-handle"
     :pagination="initialPagination"
     :filter="filter"
+    :filter-method="filterFn"
     :loading="loading"
   >
     <template v-slot:top-right>
-      <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
+      <search-box v-model="filter" />
     </template>
     <template #body-cell-image="props: { row: Weigh }">
       <q-td :props="props">
@@ -81,6 +78,7 @@
 import { QTable } from "quasar";
 
 import type { Weigh } from "@/interfaces";
+import { matchesFood } from "@/services/food-match";
 import { useCanteenStore } from "@/stores/canteen";
 import { useFoodStore } from "@/stores/food";
 import { useWeighStore } from "@/stores/weigh";
@@ -121,6 +119,16 @@ const imageUpdateDialogRef = ref<InstanceType<typeof WeighImageUpdateDialog>>();
 
 const loading = ref(false);
 const filter = ref("");
+
+const filterFn = (
+  rows: readonly Weigh[],
+  terms: string,
+  cols: readonly any[],
+  getCellValue: (col: any, row: any) => any
+) => {
+  // 参数就是传给table的行列和filter
+  return rows.filter((r) => matchesFood(terms, foodStore.get(r.food_id)));
+};
 
 const onUpdateRow = async (row: Weigh) => {
   await weighStore.update(row);

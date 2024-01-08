@@ -16,6 +16,7 @@ declare module 'vue' {
     MemberSelect: typeof import('./components/common/MemberSelect.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchBox: typeof import('./components/common/SearchBox.vue')['default']
     UIConfig: typeof import('./components/common/UIConfig.vue')['default']
   }
 }

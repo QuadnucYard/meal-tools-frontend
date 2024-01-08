@@ -91,11 +91,11 @@
 
 <script setup lang="ts">
 import _ from "lodash-es";
-import PinyinMatch from "pinyin-match";
 import { QForm, QInput, date } from "quasar";
 
 import ImageUploadBox from "@/components/tool/ImageUploadBox.vue";
 import type { Food } from "@/interfaces";
+import { matchesFood } from "@/services/food-match";
 import { useCanteenStore } from "@/stores/canteen";
 import { useFoodStore } from "@/stores/food";
 import { useWeighStore } from "@/stores/weigh";
@@ -128,11 +128,7 @@ watchEffect(() => {
 
 const foodFilterFn = (val: string, update: any, abort: any) => {
   update(() => {
-    form.foodOptions = val
-      ? foodStore.foods.filter(
-          (c) => PinyinMatch.match(c.name, val) || c.aliases.some((a) => PinyinMatch.match(a, val))
-        )
-      : foodStore.foods;
+    form.foodOptions = val ? foodStore.foods.filter((c) => matchesFood(val, c)) : foodStore.foods;
   });
 };
 

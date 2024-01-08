@@ -14,12 +14,8 @@
     :filter-method="filterFn"
     :loading="loading"
   >
-    <template v-slot:top-right>
-      <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
+    <template #top-right>
+      <search-box v-model="filter" />
     </template>
     <template #body-cell-images="props: { row: Food }">
       <q-td :props="props">
@@ -66,10 +62,10 @@
 </template>
 
 <script setup lang="ts">
-import PinyinMatch from "pinyin-match";
 import { QTable } from "quasar";
 
 import type { Food } from "@/interfaces";
+import { matchesFood } from "@/services/food-match";
 import { useFoodStore } from "@/stores/food";
 import { formatDate } from "@/utils/date-utils";
 import Message from "@/utils/message";
@@ -89,7 +85,7 @@ const columns = columnDefaults(
     { name: "desc", label: "描述" },
     { name: "create_time", label: "创建时间", format: formatDate },
     { name: "update_time", label: "更新时间", format: formatDate },
-    { name: "avg_weight", label: "平均重量（g）", format: (val: float) => val.toFixed(2) },
+    // { name: "avg_weight", label: "平均重量（g）", format: (val: float) => val.toFixed(2) },
     { name: "handle", label: "操作", sortable: false },
   ],
   { sortable: true, align: "center" }
@@ -102,15 +98,13 @@ const loading = ref(false);
 const filter = ref("");
 
 const filterFn = (
-  rows: readonly any[],
+  rows: readonly Food[],
   terms: string,
   cols: readonly any[],
   getCellValue: (col: any, row: any) => any
 ) => {
   // 参数就是传给table的行列和filter
-  return rows.filter(
-    (r: Food) => PinyinMatch.match(r.name, terms) || r.aliases.some((a) => PinyinMatch.match(a, terms))
-  );
+  return rows.filter((r) => matchesFood(terms, r));
 };
 
 const onUpdateRow = async (row: Food) => {
