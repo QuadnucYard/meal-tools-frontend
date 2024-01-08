@@ -56,6 +56,7 @@ const food = reactive<FoodCreate>({
   aliases: [],
   price: 2,
   desc: "",
+  images: [],
 });
 
 let promiseStatus: { resolve: any; reject: any } | undefined;

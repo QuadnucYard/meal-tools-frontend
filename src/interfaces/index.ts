@@ -41,7 +41,7 @@ export interface Food {
   avg_weight: float;
 }
 
-export type FoodCreate = Pick<Food, "name" | "aliases" | "price" | "desc">;
+export type FoodCreate = Pick<Food, "name" | "aliases" | "price" | "desc" | "images">;
 
 interface WeighBase {
   canteen_id: int;
