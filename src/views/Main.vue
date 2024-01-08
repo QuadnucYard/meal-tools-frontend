@@ -1,11 +1,11 @@
 <template>
   <div class="row">
-    <q-card class="col-5">
+    <q-card class="col-md-4 col-12">
       <q-card-section>
         <create-weigh-form />
       </q-card-section>
     </q-card>
-    <q-card class="col-7">
+    <q-card class="col-md-8 col-12">
       <q-card-section>
         <food-table />
         <weigh-table />

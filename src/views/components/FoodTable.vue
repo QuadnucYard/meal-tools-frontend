@@ -85,7 +85,9 @@ const columns = columnDefaults(
     { name: "desc", label: "描述" },
     { name: "create_time", label: "创建时间", format: formatDate },
     { name: "update_time", label: "更新时间", format: formatDate },
-    // { name: "avg_weight", label: "平均重量（g）", format: (val: float) => val.toFixed(2) },
+    { name: "weight_cnt", label: "数量" },
+    { name: "weight_avg", label: "平均（g）", format: (val: float) => val.toFixed(2) },
+    { name: "weight_std", label: "标准差（g）", format: (val: float) => val.toFixed(2) },
     { name: "handle", label: "操作", sortable: false },
   ],
   { sortable: true, align: "center" }

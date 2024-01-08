@@ -38,7 +38,9 @@ export interface Food {
   images: string[];
   create_time: string;
   update_time: string;
-  avg_weight: float;
+  weight_cnt: float;
+  weight_avg: float;
+  weight_std: float;
 }
 
 export type FoodCreate = Pick<Food, "name" | "aliases" | "price" | "desc" | "images">;
