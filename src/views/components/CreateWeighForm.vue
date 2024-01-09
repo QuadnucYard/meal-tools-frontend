@@ -16,8 +16,23 @@
         style="max-width: 300px"
         :rules="[(val) => val || '请选择食物']"
       >
-        <template v-slot:after>
+        <template #option="scope">
+          <q-item v-bind="scope.itemProps">
+            <q-item-section avatar>
+              {{ scope.opt.name }}
+            </q-item-section>
+            <div class="q-gutter-x-xs">
+              <TagList v-if="scope.opt.tags.length > 0" :tags="scope.opt.tags" class="inline-block" />
+              <span> &#65509;{{ scope.opt.price / 10 }} </span>
+              <span>{{ scope.opt.aliases.join(", ") }}</span>
+            </div>
+          </q-item>
+        </template>
+        <template #after>
           <q-btn round dense flat icon="add" @click="onAddFood" />
+        </template>
+        <template #hint>
+          <TagList :tags="form.food.tags" />
         </template>
       </q-select>
       <div style="display: flex">
@@ -45,7 +60,7 @@
         @blur="onWeightBlur"
         ref="weightInputRef"
       >
-        <template v-slot:hint>
+        <template #hint>
           <div class="text-sm">
             <span class="text-grey">上一个：</span>
             <span v-if="form.prevWeight" class="text-blue cursor-pointer inline-block" @click="onPickWeight">
@@ -55,14 +70,14 @@
         </template>
       </q-input>
       <q-input label="日期" filled v-model="form.record_date" mask="####-##-##" style="max-width: 300px">
-        <template v-slot:append>
+        <template #append>
           <q-icon name="event" class="cursor-pointer">
             <q-popup-proxy cover transition-show="scale" transition-hide="scale">
               <q-date v-model="form.record_date" minimal mask="YYYY-MM-DD" />
             </q-popup-proxy>
           </q-icon>
         </template>
-        <template v-slot:before>
+        <template #before>
           <q-btn
             round
             dense
@@ -71,7 +86,7 @@
             @click="form.record_date = formatDateToDay(date.subtractFromDate(form.record_date, { days: 1 }))"
           />
         </template>
-        <template v-slot:after>
+        <template #after>
           <q-btn
             round
             dense

@@ -15,11 +15,11 @@
     :filter-method="filterFn"
     :loading="loading"
   >
-    <template v-slot:top-right>
+    <template #top-right>
       <search-box v-model="filter" />
     </template>
     <template #body-cell-image="props: { row: Weigh }">
-      <q-td :props="props">
+      <q-td :props="props" auto-width>
         <q-icon
           :name="props.row.image ? 'camera_alt' : 'o_camera_alt'"
           :color="props.row.image && 'primary'"
@@ -65,7 +65,7 @@
       </q-td>
     </template>
     <template #body-cell-handle="props: { row: Weigh }">
-      <q-td :props="props">
+      <q-td :props="props" auto-width>
         <q-btn flat dense round color="blue" icon="edit" size="sm" @click="onUpdateRow(props.row)" />
         <q-btn flat dense round color="red" icon="delete" size="sm" @click="onDeleteRow(props.row)" />
       </q-td>

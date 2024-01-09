@@ -13,12 +13,18 @@
     :filter="filter"
     :filter-method="filterFn"
     :loading="loading"
+    :visible-columns="visibleColumns"
   >
     <template #top-right>
-      <search-box v-model="filter" />
+      <div>
+        <q-toggle v-model="visibleColumns" val="create_time" label="创建时间" />
+        <q-toggle v-model="visibleColumns" val="update_time" label="更新时间" />
+      </div>
+      <q-space />
+      <search-box v-model="filter" class="q-ml-md" />
     </template>
     <template #body-cell-images="props: { row: Food }">
-      <q-td :props="props">
+      <q-td :props="props" auto-width>
         <q-icon
           :name="props.row.images.length > 0 ? 'camera_alt' : 'o_camera_alt'"
           :color="props.row.images.length > 0 ? 'primary' : undefined"
@@ -44,6 +50,15 @@
         </q-popup-edit>
       </q-td>
     </template>
+    <template #body-cell-tags="props: { row: Food }">
+      <q-td :props="props">
+        <TagList :tags="props.row.tags" />
+        <q-popup-edit buttons v-model="props.row.tags" #="scope">
+          <TagSelect v-model="scope.value" autofocus />
+          <!-- 这里如果加了keyup.enter会响应属于内层的事件 -->
+        </q-popup-edit>
+      </q-td>
+    </template>
     <template #body-cell-desc="props: { row: Food }">
       <q-td :props="props">
         {{ props.row.desc }}
@@ -53,7 +68,7 @@
       </q-td>
     </template>
     <template #body-cell-handle="props: { row: Food }">
-      <q-td :props="props">
+      <q-td :props="props" auto-width>
         <q-btn flat dense round color="blue" icon="edit" size="sm" @click="onUpdateRow(props.row)" />
       </q-td>
     </template>
@@ -80,18 +95,21 @@ const columns = columnDefaults(
     { name: "id", label: "ID" },
     { name: "images", label: "图片", sortable: false },
     { name: "name", label: "名称" },
-    { name: "aliases", label: "别名", format: (val: string[]) => val.join(", ") },
+    { name: "aliases", label: "别名", format: (val: string[]) => val.join(", "), sortable: false },
     { name: "price", label: "价格", format: (val: int) => `￥${val / 10}` },
-    { name: "desc", label: "描述" },
-    { name: "create_time", label: "创建时间", format: formatDate },
-    { name: "update_time", label: "更新时间", format: formatDate },
+    { name: "tags", label: "标签" },
+    { name: "desc", label: "描述", sortable: false },
+    { name: "create_time", label: "创建时间", format: formatDate, required: false },
+    { name: "update_time", label: "更新时间", format: formatDate, required: false },
     { name: "weight_cnt", label: "数量" },
     { name: "weight_avg", label: "平均（g）", format: (val: float) => val.toFixed(2) },
     { name: "weight_std", label: "标准差（g）", format: (val: float) => val.toFixed(2) },
     { name: "handle", label: "操作", sortable: false },
   ],
-  { sortable: true, align: "center" }
+  { sortable: true, align: "center", required: true }
 );
+
+const visibleColumns = ref<string[]>([]);
 
 const tableRef = ref<QTable>();
 const imageUpdateDialogRef = ref<InstanceType<typeof UpdateFoodImageDialog>>();
@@ -110,7 +128,7 @@ const filterFn = (
 };
 
 const onUpdateRow = async (row: Food) => {
-  await foodStore.update(row);
+  await foodStore.update(Object.assign({}, row, { tags: row.tags.map((t) => t.id) }));
   Message.success("成功更新食物信息");
 };
 

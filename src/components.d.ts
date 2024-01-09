@@ -17,6 +17,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchBox: typeof import('./components/common/SearchBox.vue')['default']
+    TagList: typeof import('./components/mt/TagList.vue')['default']
     TagSelect: typeof import('./components/mt/TagSelect.vue')['default']
     UIConfig: typeof import('./components/common/UIConfig.vue')['default']
   }
