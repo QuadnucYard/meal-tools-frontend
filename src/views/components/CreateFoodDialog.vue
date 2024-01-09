@@ -19,6 +19,12 @@
         />
         <q-input v-model="food.desc" label="描述" type="textarea" filled />
         <q-item>
+          <q-item-section avatar> 标签 </q-item-section>
+          <q-item-section>
+            <TagSelect v-model="tags" />
+          </q-item-section>
+        </q-item>
+        <q-item>
           <q-item-section avatar> 价格 </q-item-section>
           <q-item-section>
             <q-slider
@@ -45,9 +51,12 @@
 </template>
 
 <script setup lang="ts">
-import type { Food, FoodCreate } from "@/interfaces";
+import { getTags } from "@/api/tag";
+import type { Food, FoodCreate, Tag } from "@/interfaces";
 import { useFoodStore } from "@/stores/food";
 import Message from "@/utils/message";
+
+const foodStore = useFoodStore();
 
 const visible = ref(false);
 
@@ -57,7 +66,9 @@ const food = reactive<FoodCreate>({
   price: 2,
   desc: "",
   images: [],
+  tags: [] as int[],
 });
+const tags = ref<Tag[]>([]);
 
 let promiseStatus: { resolve: any; reject: any } | undefined;
 
@@ -70,8 +81,9 @@ const show = () => {
 
 const onConfirm = async () => {
   try {
-    const foodStore = useFoodStore();
-    const result = await foodStore.create({ ...food, price: food.price * 10 });
+    food.tags = tags.value.map((t) => t.id);
+    food.price = food.price * 10;
+    const result = await foodStore.create(food);
     Message.success("成功创建食物");
     promiseStatus?.resolve(result);
   } catch (e) {
