@@ -13,6 +13,7 @@
     :options="filterOptions"
     option-label="name"
     option-value="id"
+    emit-value
     @filter="filterFn"
     style="width: 250px"
     @add="selectRef!.updateInputValue('')"
@@ -28,11 +29,11 @@
         dense
         @remove="scope.removeAtIndex(scope.index)"
         :tabindex="scope.tabindex"
-        :color="scope.opt.color"
-        :text-color="contrastBW(scope.opt.color)"
+        :color="tagStore.get(scope.opt).color"
+        :text-color="contrastBW(tagStore.get(scope.opt).color)"
         class="q-ma-none"
       >
-        {{ scope.opt.name }}
+        {{ tagStore.get(scope.opt).name }}
       </q-chip>
     </template>
   </q-select>
@@ -41,14 +42,13 @@
 <script setup lang="ts">
 import { QSelect } from "quasar";
 
-import { Tag } from "@/interfaces";
 import { useColorStore } from "@/stores/color";
 import { useTagStore } from "@/stores/tag";
 
 const tagStore = useTagStore();
 const { contrastBW } = useColorStore();
 
-const model = defineModel<Tag[]>();
+const model = defineModel<int[]>();
 
 const filterOptions = ref(tagStore.tags);
 const selectRef = ref<InstanceType<typeof QSelect>>();

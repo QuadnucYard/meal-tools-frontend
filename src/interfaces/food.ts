@@ -1,13 +1,14 @@
-import { Tag } from "./tag";
-
-export interface Food {
-  id: int;
+interface FoodBase {
   name: string;
   aliases: string[];
   price: int;
   desc: string;
-  tags: Tag[];
+  tag_ids: int[];
   images: string[];
+}
+
+export interface Food extends FoodBase {
+  id: int;
   create_time: string;
   update_time: string;
   weight_cnt: float;
@@ -15,11 +16,4 @@ export interface Food {
   weight_std: float;
 }
 
-export interface FoodCreate {
-  name: string;
-  aliases: string[];
-  price: int;
-  desc: string;
-  tags: int[];
-  images: string[];
-}
+export interface FoodCreate extends FoodBase {}

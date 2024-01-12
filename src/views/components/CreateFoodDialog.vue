@@ -21,7 +21,7 @@
         <q-item>
           <q-item-section avatar> 标签 </q-item-section>
           <q-item-section>
-            <TagSelect v-model="tags" />
+            <TagSelect v-model="food.tag_ids" />
           </q-item-section>
         </q-item>
         <q-item>
@@ -51,8 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { getTags } from "@/api/tag";
-import type { Food, FoodCreate, Tag } from "@/interfaces";
+import type { Food, FoodCreate } from "@/interfaces";
 import { useFoodStore } from "@/stores/food";
 import Message from "@/utils/message";
 
@@ -66,9 +65,8 @@ const food = reactive<FoodCreate>({
   price: 2,
   desc: "",
   images: [],
-  tags: [] as int[],
+  tag_ids: [] as int[],
 });
-const tags = ref<Tag[]>([]);
 
 let promiseStatus: { resolve: any; reject: any } | undefined;
 
@@ -81,7 +79,6 @@ const show = () => {
 
 const onConfirm = async () => {
   try {
-    food.tags = tags.value.map((t) => t.id);
     food.price = food.price * 10;
     const result = await foodStore.create(food);
     Message.success("成功创建食物");

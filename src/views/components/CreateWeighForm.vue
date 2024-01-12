@@ -22,7 +22,7 @@
               {{ scope.opt.name }}
             </q-item-section>
             <div class="q-gutter-x-xs">
-              <TagList v-if="scope.opt.tags.length > 0" :tags="scope.opt.tags" class="inline-block" />
+              <TagList v-if="scope.opt.tag_ids.length > 0" :tags="scope.opt.tag_ids" class="inline-block" />
               <span> &#65509;{{ scope.opt.price / 10 }} </span>
               <span>{{ scope.opt.aliases.join(", ") }}</span>
             </div>
@@ -32,7 +32,7 @@
           <q-btn round dense flat icon="add" @click="onAddFood" />
         </template>
         <template #hint>
-          <TagList v-if="form.food" :tags="form.food.tags" />
+          <TagList v-if="form.food" :tags="form.food.tag_ids" />
         </template>
       </q-select>
       <div style="display: flex">
@@ -99,6 +99,7 @@
       </q-input>
       <image-upload-box ref="uploaderRef" />
       <q-btn color="primary" type="submit">创建</q-btn>
+      <ColorPickerField style="width: 220px" />
     </q-form>
   </div>
   <create-food-dialog ref="createFoodDialogRef" />

@@ -52,12 +52,12 @@
     </template>
     <template #body-cell-tags="props: { row: Food }">
       <q-td :props="props">
-        <TagList :tags="props.row.tags" />
+        <TagList :tags="props.row.tag_ids" />
         <q-popup-edit
           buttons
-          v-model="props.row.tags"
+          v-model="props.row.tag_ids"
           #="scope"
-          @save="(val: Tag[]) => handleUpdateFoodTags(props.row, val)"
+          @save="(val: int[]) => handleUpdateFoodTags(props.row, val)"
         >
           <TagSelect v-model="scope.value" autofocus />
           <!-- 这里如果加了keyup.enter会响应属于内层的事件 -->
@@ -84,7 +84,7 @@
 <script setup lang="ts">
 import { QTable } from "quasar";
 
-import type { Food, Tag } from "@/interfaces";
+import type { Food } from "@/interfaces";
 import { matchesFood } from "@/services/matching";
 import { useFoodStore } from "@/stores/food";
 import { formatDate } from "@/utils/date-utils";
@@ -107,8 +107,8 @@ const columns = columnDefaults(
     { name: "create_time", label: "创建时间", format: formatDate, required: false },
     { name: "update_time", label: "更新时间", format: formatDate, required: false },
     { name: "weight_cnt", label: "数量" },
-    { name: "weight_avg", label: "平均（g）", format: (val: float) => val.toFixed(2) },
-    { name: "weight_std", label: "标准差（g）", format: (val: float) => val.toFixed(2) },
+    { name: "weight_avg", label: "平均（g）", format: (val?: float) => val?.toFixed(2) },
+    { name: "weight_std", label: "标准差（g）", format: (val?: float) => val?.toFixed(2) },
     { name: "handle", label: "操作", sortable: false },
   ],
   { sortable: true, align: "center", required: true }
@@ -133,7 +133,7 @@ const filterFn = (
 };
 
 const onUpdateRow = async (row: Food) => {
-  await foodStore.update(Object.assign({}, row, { tags: row.tags.map((t) => t.id) }));
+  await foodStore.update(row);
   Message.success("成功更新食物信息");
 };
 
@@ -141,7 +141,7 @@ const startUpdateImages = (row: Food) => {
   imageUpdateDialogRef.value?.show(row);
 };
 
-const handleUpdateFoodTags = async (row: Food, tags: Tag[]) => {
+const handleUpdateFoodTags = async (row: Food, tags: int[]) => {
   await foodStore.updateTags(row, tags);
   Message.success("成功更新食物标签");
 };

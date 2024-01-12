@@ -1,13 +1,17 @@
 <template>
   <div class="q-row q-gutter-xs">
-    <color-badge v-for="tag in tags" align="middle" :color="tag.color">{{ tag.name }}</color-badge>
+    <color-badge v-for="tag in tagObjs" align="middle" :color="tag.color">{{ tag.name }}</color-badge>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Tag } from "@/interfaces";
+import { useTagStore } from "@/stores/tag";
 
-const props = defineProps<{ tags: Tag[] }>();
+const props = defineProps<{ tags: int[] }>();
+
+const tagStore = useTagStore();
+
+const tagObjs = computed(() => props.tags.map(tagStore.get));
 </script>
 
 <style scoped></style>

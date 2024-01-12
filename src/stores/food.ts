@@ -2,7 +2,7 @@ import _ from "lodash-es";
 import { defineStore } from "pinia";
 
 import { createFood, getFoods, getRecentFoods, updateFood, updateFoodTags } from "@/api/food";
-import type { Food, FoodCreate, Tag } from "@/interfaces";
+import type { Food, FoodCreate } from "@/interfaces";
 
 import { useSettingsStore } from "./settings";
 
@@ -38,11 +38,8 @@ export const useFoodStore = defineStore("food", () => {
     return result;
   };
 
-  const updateTags = async (food: Food, tags: Tag[]) => {
-    const result = await updateFoodTags(
-      food.id,
-      tags.map((t) => t.id)
-    );
+  const updateTags = async (food: Food, tags: int[]) => {
+    const result = await updateFoodTags(food.id, tags);
     Object.assign(food, result);
     return result;
   };
