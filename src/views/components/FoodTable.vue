@@ -80,7 +80,7 @@
 import { QTable } from "quasar";
 
 import type { Food } from "@/interfaces";
-import { matchesFood } from "@/services/food-match";
+import { matchesFood } from "@/services/matching";
 import { useFoodStore } from "@/stores/food";
 import { formatDate } from "@/utils/date-utils";
 import Message from "@/utils/message";

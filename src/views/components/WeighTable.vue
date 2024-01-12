@@ -71,14 +71,14 @@
       </q-td>
     </template>
   </q-table>
-  <weigh-image-update-dialog ref="imageUpdateDialogRef" />
+  <update-weigh-image-dialog ref="imageUpdateDialogRef" />
 </template>
 
 <script setup lang="ts">
 import { QTable } from "quasar";
 
 import type { Weigh } from "@/interfaces";
-import { matchesFood } from "@/services/food-match";
+import { matchesFood } from "@/services/matching";
 import { useCanteenStore } from "@/stores/canteen";
 import { useFoodStore } from "@/stores/food";
 import { useWeighStore } from "@/stores/weigh";
@@ -86,7 +86,7 @@ import { formatDate } from "@/utils/date-utils";
 import Message from "@/utils/message";
 import { columnDefaults } from "@/utils/table-utils";
 
-import WeighImageUpdateDialog from "./UpdateWeighImageDialog.vue";
+import UpdateWeighImageDialog from "./UpdateWeighImageDialog.vue";
 
 const canteenStore = useCanteenStore();
 const foodStore = useFoodStore();
@@ -115,7 +115,7 @@ const initialPagination = {
 };
 
 const tableRef = ref<QTable>();
-const imageUpdateDialogRef = ref<InstanceType<typeof WeighImageUpdateDialog>>();
+const imageUpdateDialogRef = ref<InstanceType<typeof UpdateWeighImageDialog>>();
 
 const loading = ref(false);
 const filter = ref("");

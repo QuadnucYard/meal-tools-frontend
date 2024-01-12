@@ -32,7 +32,7 @@
           <q-btn round dense flat icon="add" @click="onAddFood" />
         </template>
         <template #hint>
-          <TagList :tags="form.food.tags" />
+          <TagList v-if="form.food" :tags="form.food.tags" />
         </template>
       </q-select>
       <div style="display: flex">
@@ -110,7 +110,7 @@ import { QForm, QInput, date } from "quasar";
 
 import ImageUploadBox from "@/components/tool/ImageUploadBox.vue";
 import type { Food } from "@/interfaces";
-import { matchesFood } from "@/services/food-match";
+import { matchesFood } from "@/services/matching";
 import { useCanteenStore } from "@/stores/canteen";
 import { useFoodStore } from "@/stores/food";
 import { useWeighStore } from "@/stores/weigh";

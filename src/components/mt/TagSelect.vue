@@ -15,19 +15,40 @@
     option-value="id"
     @filter="filterFn"
     style="width: 250px"
-    @add="selectRef.updateInputValue('')"
-  />
+    @add="selectRef!.updateInputValue('')"
+  >
+    <template #option="scope">
+      <q-item v-bind="scope.itemProps">
+        <color-badge :color="scope.opt.color">{{ scope.opt.name }}</color-badge>
+      </q-item>
+    </template>
+    <template #selected-item="scope">
+      <q-chip
+        removable
+        dense
+        @remove="scope.removeAtIndex(scope.index)"
+        :tabindex="scope.tabindex"
+        :color="scope.opt.color"
+        :text-color="contrastBW(scope.opt.color)"
+        class="q-ma-none"
+      >
+        {{ scope.opt.name }}
+      </q-chip>
+    </template>
+  </q-select>
 </template>
 
 <script setup lang="ts">
 import { QSelect } from "quasar";
 
 import { Tag } from "@/interfaces";
+import { useColorStore } from "@/stores/color";
 import { useTagStore } from "@/stores/tag";
 
-const model = defineModel<Tag[]>();
-
 const tagStore = useTagStore();
+const { contrastBW } = useColorStore();
+
+const model = defineModel<Tag[]>();
 
 const filterOptions = ref(tagStore.tags);
 const selectRef = ref<InstanceType<typeof QSelect>>();
@@ -47,7 +68,7 @@ const createValue: QSelect["onNewValue"] = async (val, done) => {
     // existent
     return;
   }
-  const tag = await tagStore.create({ name: val });
+  const tag = await tagStore.create({ name: val, category: undefined, color: "grey" });
   done(tag);
 };
 </script>
