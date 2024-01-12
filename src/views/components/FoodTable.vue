@@ -53,7 +53,12 @@
     <template #body-cell-tags="props: { row: Food }">
       <q-td :props="props">
         <TagList :tags="props.row.tags" />
-        <q-popup-edit buttons v-model="props.row.tags" #="scope">
+        <q-popup-edit
+          buttons
+          v-model="props.row.tags"
+          #="scope"
+          @save="(val: Tag[]) => handleUpdateFoodTags(props.row, val)"
+        >
           <TagSelect v-model="scope.value" autofocus />
           <!-- 这里如果加了keyup.enter会响应属于内层的事件 -->
         </q-popup-edit>
@@ -79,7 +84,7 @@
 <script setup lang="ts">
 import { QTable } from "quasar";
 
-import type { Food } from "@/interfaces";
+import type { Food, Tag } from "@/interfaces";
 import { matchesFood } from "@/services/matching";
 import { useFoodStore } from "@/stores/food";
 import { formatDate } from "@/utils/date-utils";
@@ -134,6 +139,11 @@ const onUpdateRow = async (row: Food) => {
 
 const startUpdateImages = (row: Food) => {
   imageUpdateDialogRef.value?.show(row);
+};
+
+const handleUpdateFoodTags = async (row: Food, tags: Tag[]) => {
+  await foodStore.updateTags(row, tags);
+  Message.success("成功更新食物标签");
 };
 </script>
 

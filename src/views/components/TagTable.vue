@@ -55,6 +55,7 @@
 import { QTable } from "quasar";
 
 import type { Tag } from "@/interfaces";
+import { matchesTag } from "@/services/matching";
 import { useTagStore } from "@/stores/tag";
 import { formatDate } from "@/utils/date-utils";
 import Message from "@/utils/message";
@@ -92,8 +93,7 @@ const filterFn = (
   cols: readonly any[],
   getCellValue: (col: any, row: any) => any
 ) => {
-  return rows;
-  // return rows.filter((r) => matchesFood(terms, foodStore.get(r.food_id)));
+  return rows.filter((r) => matchesTag(terms, r));
 };
 
 const onUpdateRow = async (row: Tag) => {

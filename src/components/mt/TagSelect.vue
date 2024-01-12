@@ -65,8 +65,7 @@ const filterFn: QSelect["onFilter"] = (val, update) => {
 
 const createValue: QSelect["onNewValue"] = async (val, done) => {
   if (tagStore.tags.some((t) => t.name == val)) {
-    // existent
-    return;
+    return; // existent
   }
   const tag = await tagStore.create({ name: val, category: undefined, color: "grey" });
   done(tag);

@@ -1,8 +1,8 @@
 import _ from "lodash-es";
 import { defineStore } from "pinia";
 
-import { createFood, getFoods, getRecentFoods, updateFood } from "@/api/food";
-import type { Food, FoodCreate } from "@/interfaces";
+import { createFood, getFoods, getRecentFoods, updateFood, updateFoodTags } from "@/api/food";
+import type { Food, FoodCreate, Tag } from "@/interfaces";
 
 import { useSettingsStore } from "./settings";
 
@@ -38,6 +38,15 @@ export const useFoodStore = defineStore("food", () => {
     return result;
   };
 
+  const updateTags = async (food: Food, tags: Tag[]) => {
+    const result = await updateFoodTags(
+      food.id,
+      tags.map((t) => t.id)
+    );
+    Object.assign(food, result);
+    return result;
+  };
+
   const fetchRecent = async (limit?: int) => {
     recentFoods.value = await getRecentFoods(limit ?? settings.recentFoodLimit);
   };
@@ -51,5 +60,5 @@ export const useFoodStore = defineStore("food", () => {
 
   watch(() => settings.recentFoodLimit, fetchRecent);
 
-  return { foods, recentFoods, options, create, get, update, fetchRecent };
+  return { foods, recentFoods, options, create, get, update, updateTags, fetchRecent };
 });
