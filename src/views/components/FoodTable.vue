@@ -54,8 +54,8 @@
       <q-td :props="props">
         <TagList :tags="props.row.tag_ids" />
         <q-popup-edit
-          buttons
           v-model="props.row.tag_ids"
+          buttons
           #="scope"
           @save="(val: int[]) => handleUpdateFoodTags(props.row, val)"
         >
@@ -122,13 +122,7 @@ const imageUpdateDialogRef = ref<InstanceType<typeof UpdateFoodImageDialog>>();
 const loading = ref(false);
 const filter = ref("");
 
-const filterFn = (
-  rows: readonly Food[],
-  terms: string,
-  cols: readonly any[],
-  getCellValue: (col: any, row: any) => any
-) => {
-  // 参数就是传给table的行列和filter
+const filterFn = (rows: readonly Food[], terms: string) => {
   return rows.filter((r) => matchesFood(terms, r));
 };
 

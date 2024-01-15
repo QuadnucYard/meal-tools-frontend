@@ -9,7 +9,7 @@ import { useColorStore } from "@/stores/color";
 
 const { getPaletteColor, contrastBW } = useColorStore();
 
-const props = defineProps<{ color: string }>();
+defineProps<{ color: string }>();
 </script>
 
 <style scoped></style>

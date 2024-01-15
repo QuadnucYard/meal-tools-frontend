@@ -120,12 +120,7 @@ const imageUpdateDialogRef = ref<InstanceType<typeof UpdateWeighImageDialog>>();
 const loading = ref(false);
 const filter = ref("");
 
-const filterFn = (
-  rows: readonly Weigh[],
-  terms: string,
-  cols: readonly any[],
-  getCellValue: (col: any, row: any) => any
-) => {
+const filterFn = (rows: readonly Weigh[], terms: string) => {
   // 参数就是传给table的行列和filter
   return rows.filter((r) => matchesFood(terms, foodStore.get(r.food_id)));
 };

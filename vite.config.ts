@@ -50,6 +50,7 @@ export default ({ mode }: ConfigEnv) =>
         ],
 
         dts: "src/auto-imports.d.ts",
+        eslintrc: { enabled: true },
       }),
 
       Components({

@@ -6,14 +6,7 @@ import { matchesTag } from "@/services/matching";
 import { useStoreAPI } from "./hook";
 
 export const useTagStore = defineStore("tag", () => {
-  const {
-    items: tags,
-    itemMap: tagMap,
-    get,
-    create,
-    update,
-    remove,
-  } = useStoreAPI(getTags, createTag, updateTag, deleteTag);
+  const { items: tags, get, create, update, remove } = useStoreAPI(getTags, createTag, updateTag, deleteTag);
 
   const getMatches = (key: string) => tags.value.filter((tag) => matchesTag(key, tag));
 

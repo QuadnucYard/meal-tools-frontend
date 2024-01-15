@@ -7,13 +7,13 @@
     style="overflow: hidden"
   >
     <div class="glass-tooltip">
-      <img v-for="image in images" :src="image" :alt="image" class="q-ma-xs mini-image" />
+      <img v-for="(image, index) in images" :key="index" :src="image" :alt="image" class="q-ma-xs mini-image" />
     </div>
   </q-tooltip>
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ images: string[] }>();
+defineProps<{ images: string[] }>();
 </script>
 
 <style scoped>

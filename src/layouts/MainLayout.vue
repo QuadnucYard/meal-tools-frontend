@@ -7,9 +7,9 @@
     <!-- <q-drawer class="shadow-0" v-model="leftDrawerOpen" show-if-above bordered :width="300"> </q-drawer> -->
 
     <q-drawer
+      v-model="rightDrawerOpen"
       class="l-shadow-3"
       no-swipe-backdrop
-      v-model="rightDrawerOpen"
       side="right"
       bordered
       overlay

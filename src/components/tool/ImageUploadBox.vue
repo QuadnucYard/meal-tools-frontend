@@ -7,7 +7,7 @@
       </template>
       <q-icon v-else name="add" />
     </q-btn>
-    <img-cutter @cutDown="cutDown" ref="cutterRef">
+    <img-cutter ref="cutterRef" @cut-down="cutDown">
       <template #open> </template>
     </img-cutter>
   </div>
@@ -20,7 +20,7 @@ import type { CutImage } from "vue-img-cutter";
 import { uploadImage } from "@/api/upload";
 import Message from "@/utils/message";
 
-const props = defineProps<{ initial?: string }>();
+defineProps<{ initial?: string }>();
 
 const cutterRef = ref<ImgCutter>();
 const image = shallowRef<CutImage>();

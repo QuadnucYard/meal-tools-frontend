@@ -1,6 +1,6 @@
 <template>
   <div class="q-row q-gutter-xs">
-    <color-badge v-for="tag in tagObjs" align="middle" :color="tag.color">{{ tag.name }}</color-badge>
+    <color-badge v-for="tag in tagObjs" :key="tag.id" align="middle" :color="tag.color">{{ tag.name }}</color-badge>
   </div>
 </template>
 

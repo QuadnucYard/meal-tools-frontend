@@ -5,7 +5,7 @@
     default-view="palette"
     class="my-color-picker"
     :palette="paddedPalette"
-    @update:model-value="(val: string) => (modelValue = hexToPalette[val])"
+    @update:model-value="onUpdateModelValue"
   />
 </template>
 
@@ -16,6 +16,12 @@ const { paddedPalette, hexToPalette } = useColorStore();
 
 const modelValue = defineModel<string>({ default: "primary" });
 const modelHex = defineModel<string>("hex", { default: useColorStore().paddedPalette[0] });
+
+const onUpdateModelValue = (val: string | null) => {
+  if (val) {
+    modelValue.value = hexToPalette[val];
+  }
+};
 </script>
 
 <style lang="scss">

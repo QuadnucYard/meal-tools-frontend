@@ -1,5 +1,5 @@
 <template>
-  <q-input filled v-model="modelValue">
+  <q-input v-model="modelValue" filled>
     <template #prepend>
       <q-icon name="event" class="cursor-pointer">
         <q-popup-proxy cover transition-show="scale" transition-hide="scale">

@@ -7,9 +7,9 @@
       <q-card-section class="q-gutter-md">
         <q-input v-model="food.name" label="名称" filled />
         <q-select
+          v-model="food.aliases"
           label="别名"
           filled
-          v-model="food.aliases"
           use-input
           use-chips
           multiple
@@ -43,8 +43,8 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn flat label="取消" color="primary" v-close-popup />
-        <q-btn flat label="创建" color="primary" v-close-popup @click="onConfirm" />
+        <q-btn v-close-popup flat label="取消" color="primary" />
+        <q-btn v-close-popup flat label="创建" color="primary" @click="onConfirm" />
       </q-card-actions>
     </q-card>
   </q-dialog>

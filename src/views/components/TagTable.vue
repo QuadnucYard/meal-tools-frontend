@@ -87,12 +87,7 @@ const tableRef = ref<QTable>();
 const loading = ref(false);
 const filter = ref("");
 
-const filterFn = (
-  rows: readonly Tag[],
-  terms: string,
-  cols: readonly any[],
-  getCellValue: (col: any, row: any) => any
-) => {
+const filterFn = (rows: readonly Tag[], terms: string) => {
   return rows.filter((r) => matchesTag(terms, r));
 };
 

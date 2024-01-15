@@ -12,7 +12,7 @@
       </q-card-section>
       <q-card-section>
         <div class="row q-col-gutter-sm">
-          <template v-for="color in themeColors">
+          <template v-for="(color, index) in themeColors" :key="index">
             <div class="col-4 column">
               <q-btn unelevated :style="{ 'background-color': color }" @click="changePrimaryColor(color)" />
             </div>
@@ -27,8 +27,8 @@
       </q-card-section>
       <q-card-section>
         <q-input
-          label="最近食物数显示"
           v-model.number="settings.recentFoodLimit"
+          label="最近食物数显示"
           type="number"
           filled
           style="max-width: 200px"

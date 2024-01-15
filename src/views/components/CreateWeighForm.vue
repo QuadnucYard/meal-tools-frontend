@@ -1,20 +1,20 @@
 <template>
   <div style="padding: 40px">
-    <q-form class="q-gutter-md" style="max-width: 500px" @submit="onSubmit" ref="formRef">
-      <q-btn-toggle label="食堂" v-model="form.canteen" toggle-color="primary" :options="canteenStore.options" />
+    <q-form ref="formRef" class="q-gutter-md" style="max-width: 500px" @submit="onSubmit">
+      <q-btn-toggle v-model="form.canteen" label="食堂" toggle-color="primary" :options="canteenStore.options" />
       <q-select
+        v-model="form.food"
         clearable
         options-dense
         label="食物"
-        v-model="form.food"
         :options="form.foodOptions"
         :option-label="(opt) => `${opt.name} (${opt.aliases}) [￥${opt.price / 10}]`"
         use-input
         map-options
-        @filter="foodFilterFn"
         filled
         style="max-width: 300px"
         :rules="[(val) => val || '请选择食物']"
+        @filter="foodFilterFn"
       >
         <template #option="scope">
           <q-item v-bind="scope.itemProps">
@@ -40,6 +40,7 @@
         <span class="q-gutter-x-md">
           <span
             v-for="food in foodStore.recentFoods"
+            :key="food.id"
             class="text-blue cursor-pointer inline-block"
             @click="onSelectRecentFood(food)"
           >
@@ -51,14 +52,14 @@
         </span>
       </div>
       <q-input
-        clearable
+        ref="weightInputRef"
         v-model="form.weight"
+        clearable
         label="重量"
         filled
         style="max-width: 300px"
         :rules="[(val) => val != '' || '请输入重量']"
         @blur="onWeightBlur"
-        ref="weightInputRef"
       >
         <template #hint>
           <div class="text-sm">
@@ -69,7 +70,7 @@
           </div>
         </template>
       </q-input>
-      <q-input label="日期" filled v-model="form.record_date" mask="####-##-##" style="max-width: 300px">
+      <q-input v-model="form.record_date" label="日期" filled mask="####-##-##" style="max-width: 300px">
         <template #append>
           <q-icon name="event" class="cursor-pointer">
             <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -142,7 +143,7 @@ watchEffect(() => {
   form.canteen ??= canteenStore.canteens[0]?.id;
 });
 
-const foodFilterFn = (val: string, update: any, abort: any) => {
+const foodFilterFn = (val: string, update: any) => {
   update(() => {
     form.foodOptions = val ? foodStore.foods.filter((c) => matchesFood(val, c)) : foodStore.foods;
   });

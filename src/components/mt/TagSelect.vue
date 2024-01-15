@@ -1,21 +1,21 @@
 <template>
   <q-select
     ref="selectRef"
+    v-model="model"
     filled
     options-dense
-    v-model="model"
     use-input
     use-chips
     multiple
     clearable
     input-debounce="0"
-    @new-value="createValue"
     :options="filterOptions"
     option-label="name"
     option-value="id"
     emit-value
-    @filter="filterFn"
     style="width: 250px"
+    @new-value="createValue"
+    @filter="filterFn"
     @add="selectRef!.updateInputValue('')"
   >
     <template #option="scope">
@@ -27,11 +27,11 @@
       <q-chip
         removable
         dense
-        @remove="scope.removeAtIndex(scope.index)"
         :tabindex="scope.tabindex"
         :color="tagStore.get(scope.opt).color"
         :text-color="contrastBW(tagStore.get(scope.opt).color)"
         class="q-ma-none"
+        @remove="scope.removeAtIndex(scope.index)"
       >
         {{ tagStore.get(scope.opt).name }}
       </q-chip>

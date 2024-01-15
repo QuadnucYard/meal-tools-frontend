@@ -1,8 +1,8 @@
 <template>
   <q-select
+    v-model="modelValue"
     filled
     options-dense
-    v-model="modelValue"
     :label="label"
     use-input
     use-chips
@@ -18,7 +18,7 @@
 <script setup lang="ts" generic="T">
 import { defineModel } from "vue";
 
-const props = defineProps<{
+defineProps<{
   label: string;
   options: T[];
   labelFn: (t: T) => string;
