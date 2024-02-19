@@ -11,7 +11,8 @@ export const useFoodStore = defineStore("food", () => {
 
   const foods = ref<Food[]>([]);
   const foodDict = ref<{ [id: int]: Food }>({});
-  const recentFoods = ref<Food[]>([]);
+  const recentFoodIds = ref<int[]>([]);
+  const recentFoods = computed(() => recentFoodIds.value.map((i) => foodDict.value[i]));
 
   const options = computed(() =>
     foods.value.map((opt) => ({
@@ -45,15 +46,14 @@ export const useFoodStore = defineStore("food", () => {
   };
 
   const fetchRecent = async (limit?: int) => {
-    recentFoods.value = await getRecentFoods(limit ?? settings.recentFoodLimit);
+    recentFoodIds.value = await getRecentFoods(limit ?? settings.recentFoodLimit);
   };
 
   getFoods().then((v) => {
     foods.value = v;
     foodDict.value = _.keyBy(v, "id");
+    fetchRecent();
   });
-
-  fetchRecent();
 
   watch(() => settings.recentFoodLimit, fetchRecent);
 

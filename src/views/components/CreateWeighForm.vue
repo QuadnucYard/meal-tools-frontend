@@ -57,8 +57,9 @@
         clearable
         label="重量"
         filled
+        lazy-rules
+        :rules="[(val) => (val != '' && !Number.isNaN(Number(val))) || '请输入重量']"
         style="max-width: 300px"
-        :rules="[(val) => val != '' || '请输入重量']"
         @blur="onWeightBlur"
       >
         <template #hint>
@@ -134,7 +135,7 @@ const form = reactive({
   foodOptions: [] as Food[],
   canteen: undefined as int | undefined,
   food: undefined as Food | undefined,
-  weight: undefined as int | undefined,
+  weight: "",
   prevWeight: undefined as int | undefined,
   record_date: formatDateToDay(new Date()),
 });
@@ -168,12 +169,9 @@ const autoDate = () => {
 };
 
 const onWeightBlur = () => {
-  if (form.weight) {
-    form.weight = eval(form.weight?.toString());
-    // if (typeof (form.weight) != "number") {
-    //   weightInputRef.value?.error("请输入数值");
-    // }
-  }
+  try {
+    form.weight = eval(form.weight);
+  } catch (e) {}
 };
 
 const onAddFood = () => {
@@ -184,18 +182,19 @@ const onAddFood = () => {
 
 const onSubmit = async () => {
   try {
+    const weight = parseInt(form.weight);
     const image = await uploaderRef.value!.upload();
     await weighStore.create({
       canteen_id: form.canteen!,
       food_id: form.food!.id,
-      weight: form.weight!,
+      weight,
       record_date: form.record_date,
       image,
     });
     Message.success("成功创建记录");
     form.food = undefined;
-    form.prevWeight = form.weight;
-    form.weight = undefined;
+    form.prevWeight = weight;
+    form.weight = "";
     formRef.value?.reset();
     await foodStore.fetchRecent();
   } catch (e) {
