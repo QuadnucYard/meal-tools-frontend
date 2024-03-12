@@ -14,6 +14,10 @@ export async function updateFood(payload: Food) {
   return await api.put<Food, Food>(`/food/${payload.id}`, payload);
 }
 
+export async function removeFood(food_id: int) {
+  return await api.delete<Food, Food>(`/food/${food_id}`);
+}
+
 export async function updateFoodTags(foodId: int, tags: int[]) {
   return await api.put<Food, Food>(`/food/${foodId}/tags`, tags);
 }

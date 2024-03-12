@@ -9,7 +9,8 @@ export function useStoreAPI<
   getter: () => Promise<T[]>,
   creator: (item: TCreate) => Promise<T>,
   updater: (item: TUpdate) => Promise<T>,
-  remover: (id: Id) => Promise<T>
+  remover: (id: Id) => Promise<T>,
+  options: { prefetch: boolean } = { prefetch: true }
 ) {
   const items = ref([]) as Ref<T[]>;
   const itemMap = ref(new Map()) as Ref<Map<Id, T>>;
@@ -36,10 +37,15 @@ export function useStoreAPI<
     return result;
   };
 
-  getter().then((v) => {
-    items.value = v;
-    itemMap.value = new Map(v.map((item) => [item.id, item]));
-  });
+  const fetchAll = async () => {
+    const results = await getter();
+    items.value = results;
+    itemMap.value = new Map(results.map((item) => [item.id, item]));
+  };
 
-  return { items, itemMap, get, create, update, remove };
+  if (options?.prefetch) {
+    fetchAll();
+  }
+
+  return { items, itemMap, get, create, update, remove, fetchAll };
 }
