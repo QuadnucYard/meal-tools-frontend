@@ -15,6 +15,10 @@
     :filter-method="filterFn"
     :loading="loading"
   >
+    <template #top-left>
+      <div class="q-table__title">标签</div>
+      <q-btn flat round size="sm" icon="refresh" @click="tagStore.fetchAll()" />
+    </template>
     <template #top-right>
       <search-box v-model="filter" />
     </template>

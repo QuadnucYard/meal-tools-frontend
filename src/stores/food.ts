@@ -1,4 +1,3 @@
-import _ from "lodash-es";
 import { defineStore } from "pinia";
 
 import { createFood, getFoods, getRecentFoods, removeFood, updateFood, updateFoodTags } from "@/api/food";
@@ -47,5 +46,5 @@ export const useFoodStore = defineStore("food", () => {
 
   watch(() => settings.recentFoodLimit, fetchRecent);
 
-  return { foods, recentFoods, options, create, get, remove, update, updateTags, fetchRecent };
+  return { foods, recentFoods, options, create, get, remove, update, updateTags, fetchAll, fetchRecent };
 });

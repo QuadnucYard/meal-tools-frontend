@@ -11,7 +11,7 @@ const props = defineProps<{ tags: int[] }>();
 
 const tagStore = useTagStore();
 
-const tagObjs = computed(() => props.tags.map(tagStore.get));
+const tagObjs = computed(() => props.tags.map(tagStore.get).filter(Boolean));
 </script>
 
 <style scoped></style>

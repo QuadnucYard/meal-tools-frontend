@@ -15,6 +15,10 @@
     :loading="loading"
     :visible-columns="visibleColumns"
   >
+    <template #top-left>
+      <div class="q-table__title">食物</div>
+      <q-btn flat round size="sm" icon="refresh" @click="foodStore.fetchAll()" />
+    </template>
     <template #top-right>
       <div>
         <q-toggle v-model="visibleColumns" val="create_time" label="创建时间" />
