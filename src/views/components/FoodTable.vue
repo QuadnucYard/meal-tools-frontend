@@ -79,18 +79,7 @@
     <template #body-cell-handle="props: { row: Food }">
       <q-td :props="props" auto-width>
         <q-btn flat dense round color="blue" icon="edit" size="sm" @click="onUpdateRow(props.row)" />
-        <q-btn flat dense round color="red" icon="delete" size="sm" @click="preDeleteRow(props.row)" />
-        <q-dialog v-model="alertVisible">
-          <q-card>
-            <q-card-section>
-              <div class="text-h6">删除食物</div>
-            </q-card-section>
-            <q-card-section class="q-pt-none"> 确定要删除吗？ </q-card-section>
-            <q-card-actions align="right">
-              <q-btn v-close-popup flat label="OK" color="primary" @click="onDeleteRow" />
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
+        <q-btn flat dense round color="red" icon="delete" size="sm" @click="onDeleteRow(props.row)" />
       </q-td>
     </template>
   </q-table>
@@ -100,6 +89,7 @@
 <script setup lang="ts">
 import { QTable } from "quasar";
 
+import { getFoodRc } from "@/api/food";
 import type { Food } from "@/interfaces";
 import { matchesFood } from "@/services/matching";
 import { useFoodStore } from "@/stores/food";
@@ -108,6 +98,8 @@ import Message from "@/utils/message";
 import { columnDefaults } from "@/utils/table-utils";
 
 import UpdateFoodImageDialog from "./UpdateFoodImageDialog.vue";
+
+const $q = useQuasar();
 
 const foodStore = useFoodStore();
 
@@ -138,9 +130,6 @@ const imageUpdateDialogRef = ref<InstanceType<typeof UpdateFoodImageDialog>>();
 const loading = ref(false);
 const filter = ref("");
 
-const alertVisible = ref(false);
-const rowToDelete = ref<Food>();
-
 const filterFn = (rows: readonly Food[], terms: string) => {
   return rows.filter((r) => matchesFood(terms, r));
 };
@@ -150,19 +139,19 @@ const onUpdateRow = async (row: Food) => {
   Message.success("成功更新食物信息");
 };
 
-const preDeleteRow = (row: Food) => {
-  rowToDelete.value = row;
-  alertVisible.value = true;
-};
-
-const onDeleteRow = async () => {
-  if (!rowToDelete.value) {
-    Message.warning("没有要删除的食物！");
-    return;
-  }
-  await foodStore.remove(rowToDelete.value);
-  Message.success("成功删除食物");
-  rowToDelete.value = undefined;
+const onDeleteRow = async (row: Food) => {
+  const rc = await getFoodRc(row.id);
+  const hint = rc === 0 ? "可以安全删除" : "";
+  $q.dialog({
+    title: "删除食物",
+    message: `<p>确定要删除 <span class="text-primary text-bold">[${row.name}] (id: ${row.id})</span> 吗？</p>
+              <p class="${rc > 0 ? "text-red" : "text-green"}">引用次数：${rc} ${hint}</p>`,
+    html: true,
+    cancel: true,
+  }).onOk(async () => {
+    await foodStore.remove(row);
+    Message.success("成功删除食物");
+  });
 };
 
 const startUpdateImages = (row: Food) => {

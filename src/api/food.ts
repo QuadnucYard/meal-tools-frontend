@@ -25,3 +25,7 @@ export async function updateFoodTags(foodId: int, tags: int[]) {
 export async function getRecentFoods(limit: int) {
   return await api.get<int[], int[]>("/food/rec", { params: { limit } });
 }
+
+export async function getFoodRc(food_id: int) {
+  return await api.get<int, int>(`/food/${food_id}/rc`);
+}
