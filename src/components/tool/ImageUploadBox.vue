@@ -22,7 +22,7 @@ import Message from "@/utils/message";
 
 defineProps<{ initial?: string }>();
 
-const cutterRef = ref<ImgCutter>();
+const cutterRef = ref();
 const image = shallowRef<CutImage>();
 const ignoreInitial = ref(false);
 

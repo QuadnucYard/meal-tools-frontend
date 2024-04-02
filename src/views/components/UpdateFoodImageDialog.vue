@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import ImageUploadArray from "@/components/tool/ImageUploadArray.vue";
-import { Food } from "@/interfaces";
+import type { Food } from "@/interfaces";
 import { useFoodStore } from "@/stores/food";
 import Message from "@/utils/message";
 

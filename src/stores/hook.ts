@@ -1,4 +1,4 @@
-import { Indexable } from "@/interfaces";
+import type { Indexable } from "@/interfaces";
 
 export function useStoreAPI<
   Id extends number | string,

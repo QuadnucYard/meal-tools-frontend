@@ -20,7 +20,9 @@ export const useFoodStore = defineStore("food", () => {
   } = useStoreAPI(getFoods, createFood, updateFood, removeFood, { prefetch: false });
 
   const recentFoodIds = ref<int[]>([]);
-  const recentFoods = computed(() => recentFoodIds.value.map((i) => foodMap.value.get(i)));
+  const recentFoods = computed(() =>
+    recentFoodIds.value.map((i) => foodMap.value.get(i)).filter((t) => t != undefined)
+  );
 
   const options = computed(() =>
     foods.value.map((opt) => ({

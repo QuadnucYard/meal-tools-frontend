@@ -1,8 +1,8 @@
 import type { QTable } from "quasar";
-import { Ref } from "vue";
+import type { Ref } from "vue";
 
 import type { Page, Pagination } from "@/interfaces";
-import { TablePagination, TableRequestProps } from "@/types/quasar";
+import type { TablePagination, TableRequestProps } from "@/types/quasar";
 
 export function addSSP(tableRef: Ref<QTable | undefined>) {
   return () => tableRef.value!.requestServerInteraction();

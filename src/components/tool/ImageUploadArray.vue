@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { CutImage } from "vue-img-cutter";
+import type { CutImage } from "vue-img-cutter";
 
 import { uploadImages } from "@/api/upload";
 

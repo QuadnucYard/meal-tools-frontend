@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import ImageUploadBox from "@/components/tool/ImageUploadBox.vue";
-import { Weigh } from "@/interfaces";
+import type { Weigh } from "@/interfaces";
 import { useWeighStore } from "@/stores/weigh";
 import Message from "@/utils/message";
 

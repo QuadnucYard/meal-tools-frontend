@@ -1,4 +1,4 @@
-import { RouteRecordRaw, Router, createRouter, createWebHistory } from "vue-router";
+import { type RouteRecordRaw, type Router, createRouter, createWebHistory } from "vue-router";
 
 import routes from "./routes";
 

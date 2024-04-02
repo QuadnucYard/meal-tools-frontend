@@ -1,4 +1,4 @@
-import { Tag, TagCreate, TagUpdate } from "@/interfaces";
+import type { Tag, TagCreate, TagUpdate } from "@/interfaces";
 
 import { createAPIRoute } from "./api-route";
 

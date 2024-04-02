@@ -38,17 +38,19 @@
       <div style="display: flex">
         <span class="text-grey" style="width: 5em; min-width: 3em">最近</span>
         <span class="q-gutter-x-md">
-          <span
-            v-for="food in foodStore.recentFoods"
-            :key="food.id"
-            class="text-blue cursor-pointer inline-block"
-            @click="onSelectRecentFood(food)"
-          >
-            {{ food.name }}
-            <q-tooltip v-if="food.desc.length > 0">
-              {{ food.desc }}
-            </q-tooltip>
-          </span>
+          <template v-for="food in foodStore.recentFoods">
+            <span
+              v-if="food"
+              :key="food.id"
+              class="text-blue cursor-pointer inline-block"
+              @click="onSelectRecentFood(food)"
+            >
+              {{ food.name }}
+              <q-tooltip v-if="food.desc.length > 0">
+                {{ food.desc }}
+              </q-tooltip>
+            </span>
+          </template>
         </span>
       </div>
       <q-input
@@ -108,7 +110,7 @@
 </template>
 
 <script setup lang="ts">
-import _ from "lodash-es";
+import * as _ from "lodash-es";
 import { QForm, QInput, date } from "quasar";
 
 import ImageUploadBox from "@/components/tool/ImageUploadBox.vue";
@@ -171,7 +173,9 @@ const autoDate = () => {
 const onWeightBlur = () => {
   try {
     form.weight = eval(form.weight);
-  } catch (e) {}
+  } catch {
+    // do-nothing
+  }
 };
 
 const onAddFood = () => {

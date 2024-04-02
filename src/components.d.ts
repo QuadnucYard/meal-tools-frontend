@@ -15,7 +15,6 @@ declare module 'vue' {
     ImagePreviewTooltip: typeof import('./components/common/ImagePreviewTooltip.vue')['default']
     ImageUploadArray: typeof import('./components/tool/ImageUploadArray.vue')['default']
     ImageUploadBox: typeof import('./components/tool/ImageUploadBox.vue')['default']
-    InputColorPicker: typeof import('./components/common/InputColorPicker.vue')['default']
     InputDateTime: typeof import('./components/common/InputDateTime.vue')['default']
     MemberSelect: typeof import('./components/common/MemberSelect.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
