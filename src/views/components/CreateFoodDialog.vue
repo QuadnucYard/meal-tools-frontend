@@ -6,12 +6,7 @@
       </q-card-section>
       <q-card-section class="q-gutter-md">
         <q-form @submit="onConfirm">
-          <q-input
-            v-model="food.name"
-            label="名称"
-            filled
-            :rules="[(val) => (val != '' && !Number.isNaN(Number(val))) || '请输入名称']"
-          />
+          <q-input v-model="food.name" label="名称" filled :rules="[(val) => val != '' || '请输入名称']" />
           <q-select
             v-model="food.aliases"
             label="别名"
@@ -39,10 +34,17 @@
                 label
                 label-always
                 :label-value="(food.price / 10).toFixed(1)"
-                :marker-labels="(x: number) => (x / 10).toFixed(1)"
+                :marker-labels="[
+                  { value: 0, label: '0' },
+                  { value: 10, label: '1' },
+                  { value: 20, label: '2' },
+                  { value: 30, label: '3' },
+                  { value: 40, label: '4' },
+                  { value: 50, label: '5' },
+                ]"
                 :min="0"
                 :max="50"
-                :step="5"
+                :step="1"
                 snap
               />
             </q-item-section>
