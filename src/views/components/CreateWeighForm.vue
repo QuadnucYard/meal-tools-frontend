@@ -172,6 +172,9 @@ const autoDate = () => {
 
 const onWeightBlur = () => {
   try {
+    if (form.weight.endsWith("-")) {
+      form.weight += form.prevWeight;
+    }
     form.weight = eval(form.weight);
   } catch {
     // do-nothing
